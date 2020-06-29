@@ -1,7 +1,4 @@
 import React from "react";
-import { menuBar } from "../sampleData/forHeaderFooter";
-import { Link } from "react-router-dom";
-import { EMAIL, PHONENUMBER, ADDRESS } from "../sampleData/collegeDetails";
 
 const Footer = (props) => {
   return (

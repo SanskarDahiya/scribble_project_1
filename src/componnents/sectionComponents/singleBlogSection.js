@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { getSingleBlog, UpdateBlog } from "../../sampleData/blogDetails";
-import SubPagesTopSection from "./subPagesTopSection";
 
 const SingleBlogSection = (props) => {
   const user_id = (props && props.location && props.location.hash) || false;

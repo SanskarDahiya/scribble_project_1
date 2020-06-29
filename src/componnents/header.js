@@ -1,8 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { whiteText } from "../customStyles";
-import { menuBar, logoUrl } from "../sampleData/forHeaderFooter";
-import { EMAIL, PHONENUMBER } from "../sampleData/collegeDetails";
 
 const Header = (props) => {
   const handleForm = (e) => {

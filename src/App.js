@@ -4,11 +4,7 @@ import Header from "./componnents/header";
 import Footer from "./componnents/footer";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Index from "./componnents";
-import About from "./componnents/about";
-import Course from "./componnents/Cources";
-import Staff from "./componnents/staff";
 import MultiBlogs from "./componnents/multiBlog";
-import Contacts from "./componnents/contacts";
 import PAGENOTFOUND from "./componnents/pageNotFound";
 import Login from "./componnents/login";
 
