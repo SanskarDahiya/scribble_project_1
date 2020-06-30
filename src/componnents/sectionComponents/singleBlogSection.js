@@ -1,13 +1,35 @@
 import React, { useState, useEffect } from "react";
-
+import { getUserByUserId } from "../../sampleData/loginSetup";
+const Loader = () => {
+  return (
+    <div id="ftco-loader" class="show fullscreen">
+      <svg class="circular" width="48px" height="48px">
+        <circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee" />
+        <circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00" />
+      </svg>
+    </div>
+  );
+};
 const SingleBlogSection = (props) => {
   const user_id = (props && props.location && props.location.hash) || false;
-  const userDetails = user_id;
+  const [userDetails, userDetailsUpdater] = useState(false);
+  const [loader, loaderUpdater] = useState(true);
   if (!user_id) {
     props.history.push("/");
   }
+  const validateUser = async (user_id) => {
+    user_id = (user_id + "").slice(1);
+    let result = await getUserByUserId(user_id);
+    result = result && result[0];
+    userDetailsUpdater(result);
+    // loaderUpdater(false);
+  };
+  useEffect(() => {
+    validateUser(user_id);
+  }, []);
   return (
     <>
+      {/* {loader ? <Loader /> : <></>} */}
       <section className="ftco-section">
         <div className="container">{userDetails ? <ShowUser {...props} user={userDetails} updater={() => {}} /> : <NoUser {...props} />}</div>
       </section>
@@ -19,16 +41,12 @@ export default SingleBlogSection;
 const NoUser = (props) => {
   return (
     <>
-      <section className="ftco-section">
-        <div className="container">
-          <div className="row">
-            <div className="col-lg-8 ">
-              <h2 className="mb-3">{"TITLE"}</h2>
-              noUser
-            </div>
-          </div>
+      <div className="row">
+        <div className="col-lg-8 ">
+          <h2 className="mb-3">{"NO USER FOUND"}</h2>
+          Unable to find User, THere might be an problem with url Please try again
         </div>
-      </section>
+      </div>
     </>
   );
 };
@@ -66,7 +84,7 @@ const ShowUser = (props) => {
       },
     };
     props.updater(newMessage);
-    props.history.push("/", { messageSent: props.user });
+    // props.history.push("/", { messageSent: props.user });
     nameUpdater("");
     messageUpdater("");
     return;

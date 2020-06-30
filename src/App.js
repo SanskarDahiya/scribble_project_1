@@ -10,8 +10,8 @@ import Login from "./componnents/login";
 
 const App = (props) => {
   // { _id: "5ee0f4e5e081ebe6a207e6f7", username: "admin" }
-  // const [loginDetails, loginUpdater] = useState(false);
-  const [loginDetails, loginUpdater] = useState({ _id: "5ee0f4e5e081ebe6a207e6f7", username: "admin" });
+  const [loginDetails, loginUpdater] = useState(false);
+  // const [loginDetails, loginUpdater] = useState({ _id: "5ee0f4e5e081ebe6a207e6f7", username: "admin" });
   const setLoginDetails = (data) => {
     loginUpdater(data);
   };

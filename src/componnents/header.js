@@ -7,6 +7,12 @@ const Header = (props) => {
     e.preventDefault();
     return;
   };
+  // console.log(props, props.location.pathname.search("login"));
+
+  let isNotLoginPage = false;
+  if (props && props.location && props.location.pathname) {
+    isNotLoginPage = (props.location.pathname + "").search("login") === -1;
+  }
   return (
     <>
       <div className="bg-top navbar-light">
@@ -28,7 +34,7 @@ const Header = (props) => {
                     <span>Call Us: {PHONENUMBER}</span>
                   </div>
                 </div> */}
-                <LoginButton {...props} />
+                {isNotLoginPage && <LoginButton {...props} />}
               </div>
             </div>
           </div>
