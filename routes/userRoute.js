@@ -4,20 +4,37 @@ const router = express.Router();
 const { userDB } = require("../Schemas/index");
 const { getMethods } = require("../apis/index");
 const { serverPrefix } = require("../apis/serverHoc");
+const { query } = require("express");
+const { encPassword } = require("../apis/encryption");
 const api = getMethods(userDB);
 
 const createUser = async req => {
   const { data } = req.body;
-  if (!data) {
+  let { password, _id } = data;
+  if (!data || !_id || !password) {
     let err = new Error();
     err.message = "Insufficient Params";
     err.code = "Insufficient Params";
     throw err;
   }
-  return await api.addData(data);
+  password = encPassword(password);
+  return await api.addData({ ...data, password });
+};
+
+const validateUser = async req => {
+  const { username, password } = req.body;
+  if (!username || !password) {
+    let err = new Error();
+    err.message = "Insufficient Params";
+    err.code = "Insufficient Params";
+    throw err;
+  }
+  const query = { $and: [{ _id: username }, { password: encPassword(password) }] };
+  return await api.getSingleData(query);
 };
 
 router.all("/create", serverPrefix(createUser));
+router.all("/validate", serverPrefix(validateUser));
 
 router.all(`/`, (req, res) => {
   res.sendStatus(200);
