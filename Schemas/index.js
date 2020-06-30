@@ -1,6 +1,9 @@
 const { getModel, getSchema } = require("./schemaModel");
 
 const userSchema = {
+  _id: String,
+  username: String,
+  password: String,
   name: String
 };
 

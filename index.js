@@ -20,7 +20,10 @@ mongoose.connect(mongoDbURL, { useNewUrlParser: true, useUnifiedTopology: true }
 app.all("/", async (req, res) => {
   res.send("INITIATIVE IS RUNNING");
 });
-
+app.all("*", async (req, res) => {
+  // All Extra pages
+  res.sendStatus(401);
+});
 const server = app.listen(9797, "0.0.0.0", () => {
   console.log("Server is start:\n" + JSON.stringify(server.address()));
 });

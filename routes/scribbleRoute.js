@@ -1,15 +1,16 @@
 // const api = require("../apis/api");
 const express = require("express");
 const router = express.Router();
+const { scribbleDB } = require("../Schemas/index");
+const { getMethods } = require("../apis/index");
+const api = getMethods(scribbleDB);
 
-//Home Page
 router.all(`/`, (req, res) => {
-  res.send("Home");
+  res.sendStatus(200).send("scribe");
 });
 
 router.all("*", (req, res) => {
-  // All Extra pages
-  res.send("404 Not Found");
+  res.sendStatus(401);
 });
 
 module.exports = router;
