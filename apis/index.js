@@ -9,11 +9,13 @@ module.exports = {
     addData: data => db.create(data),
     getSingleData: search => db.findOne(search),
     getAllData: search => db.find(search),
-    removeData: search => db.remove(search)
+    removeData: search => db.remove(search),
+    updateData: (find, update) => db.updateOne(find, update)
   }),
   getDataById: db => _id => db.find({ _id }),
   addData: db => data => db.create(data),
   getSingleData: db => search => db.findOne(search),
   getAllData: db => search => db.find(search),
-  removeData: db => search => db.remove(search)
+  removeData: db => search => db.remove(search),
+  updateData: db => (find, update) => db.updateOne(find, update)
 };

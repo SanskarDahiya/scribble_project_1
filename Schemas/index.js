@@ -4,11 +4,16 @@ const userSchema = {
   _id: String,
   username: String,
   password: String,
-  name: String
+  name: String,
+  deviceInfo: Object,
+  totalMessages: Number
 };
 
 const scribbleSchema = {
-  message: String
+  message: String,
+  from: Object,
+  to: Object,
+  comment: Object
 };
 
 const userDB = getModel("UserTable", getSchema(userSchema));
