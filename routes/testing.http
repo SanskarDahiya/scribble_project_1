@@ -1,0 +1,68 @@
+testing.http
+#####################
+post http://localhost:9797/user/create
+Content-Type: application/json
+
+{
+    "user":{
+        "_id":"SanskarDahiya",
+        "password":"123456789"
+        }
+}
+
+#####################
+post http://localhost:9797/user/validate
+Content-Type: application/json
+
+{    
+        "username":"SanskarDahiya",
+        "password":"123456789"
+}
+#####################
+post http://localhost:9797/user/getUserById
+Content-Type: application/json
+
+{
+        "_id":"SanskarDahiya"
+}
+#####################
+post http://localhost:9797/user/updateUser
+Content-Type: application/json
+
+{
+        "_id":"SanskarDahiya",
+        "data":{
+            "name":"Sanskar Dahiya",
+            "age":"12"
+        }
+}
+
+
+
+#####################
+post http://localhost:9797/scribble/create
+Content-Type: application/json
+
+{
+    "message":"test3",
+        "to":{"_id1":"sanskarDahiya"}
+       
+}
+
+
+#####################
+post http://localhost:9797/scribble/getScribbleByUserId
+Content-Type: application/json
+
+{
+        "_id":"sanskarDahiya"     
+}
+
+#####################
+post http://localhost:9797/scribble/addComment
+Content-Type: application/json
+
+{
+        "_id":"5efc8f748a6a4f515f529ad3"  ,
+        "comment":"COmment test"   
+}

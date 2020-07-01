@@ -9,7 +9,7 @@ const writeJsonResponse = (resp, { result = {} }) => {
   }
   if (result instanceof Error) {
     result = {
-      error: { message: result.message, code: result.code },
+      error: { message: result.message, code: result.code || null },
       status: "error",
       code: 500
     };

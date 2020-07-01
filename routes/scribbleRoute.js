@@ -1,23 +1,39 @@
 // const api = require("../apis/api");
 const express = require("express");
 const router = express.Router();
-const { scribbleDB } = require("../Schemas/index");
-const { getMethods } = require("../apis/index");
+const mongoose = require("mongoose");
+const { scribbleDB, userDB } = require("../Schemas/index");
+const db = require("../apis/index");
 const { serverPrefix } = require("../apis/serverHoc");
 const { encPassword } = require("../apis/encryption");
+const { getMethods } = db;
 const api = getMethods(scribbleDB);
+const ObjectId = mongoose.Types.ObjectId;
 
 const createScribble = async req => {
-  const { data } = req.body;
-  let { message, from, to } = data;
-  if (!message || !from || !to) {
+  let { message, from, to } = req.body || {};
+  let { _id } = to || {};
+  if (!message || !to || !_id) {
     let err = new Error();
     err.message = "Insufficient Params";
     err.code = "Insufficient Params";
     throw err;
   }
-  return await api.addData({ message, to, from });
+  let result = await db.getAllData(userDB)({ _id: (_id + "").toLowerCase() });
+  if (!result || !result[0]) {
+    let err = new Error();
+    err.message = "User Not Found";
+    err.code = "User Not Found";
+    throw err;
+  }
+  to["_id"] = (_id + "").toLowerCase();
+  if (from && from["_id"]) {
+    from["_id"] = (from["_id"] + "").toLowerCase();
+  }
+  result = await api.addData({ message, to, from });
+  return result ? [result] : [];
 };
+
 const getScribbleByUserId = async req => {
   const { _id } = req.body;
   if (!_id) {
@@ -26,29 +42,38 @@ const getScribbleByUserId = async req => {
     err.code = "Insufficient Params";
     throw err;
   }
-  const query = { "to._id": _id };
+  const query = { "to._id": (_id + "").toLowerCase() };
   const result = await api.getAllData(query);
   return result || [];
 };
+
 const addComment = async req => {
-  const { to, from, comment } = req.body;
+  const { _id, comment } = req.body;
   if (!_id || !comment) {
     let err = new Error();
     err.message = "Insufficient Params";
     err.code = "Insufficient Params";
     throw err;
   }
-  const find = { "from._id": _id };
+  const find = { _id: ObjectId(_id) };
   const result = await api.getSingleData(find);
-  if (!result || !result[0]) {
+  if (!result) {
     let err = new Error();
     err.message = "Scribble Not Found";
     err.code = "Scribble Not Found";
     throw err;
   }
+  if (result.comment) {
+    let err = new Error();
+    err.message = "Already Commented";
+    err.code = "Already Commented";
+    throw err;
+  }
   const update = { $set: { comment } };
-  return await api.updateData(find, update);
+  await api.updateData(find, update);
+  return [Object.assign(result, { comment })];
 };
+
 router.all("/create", serverPrefix(createScribble));
 router.all("/getScribbleByUserId", serverPrefix(getScribbleByUserId));
 router.all("/addComment", serverPrefix(addComment));

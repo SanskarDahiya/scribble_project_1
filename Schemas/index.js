@@ -6,7 +6,8 @@ const userSchema = {
   password: String,
   name: String,
   deviceInfo: Object,
-  totalMessages: Number
+  totalMessages: Number,
+  age: Number
 };
 
 const scribbleSchema = {
