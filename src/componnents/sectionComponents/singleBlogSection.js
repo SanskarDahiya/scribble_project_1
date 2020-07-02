@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { getUserByUserId } from "../../sampleData/loginSetup";
-const Loader = () => {
+import { getUserByUserId, sendMessage } from "../../sampleData/loginSetup";
+
+const Wait = () => {
   return (
-    <div id="ftco-loader" class="show fullscreen">
+    <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
       <svg class="circular" width="48px" height="48px">
         <circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee" />
         <circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00" />
       </svg>
+      Finding User
     </div>
   );
 };
@@ -18,20 +20,28 @@ const SingleBlogSection = (props) => {
     props.history.push("/");
   }
   const validateUser = async (user_id) => {
-    user_id = (user_id + "").slice(1);
-    let result = await getUserByUserId(user_id);
-    result = result && result[0];
+    let result = false;
+    try {
+      user_id = (user_id + "").slice(1);
+      result = await getUserByUserId(user_id);
+      result = result && result[0];
+    } catch (err) {}
     userDetailsUpdater(result);
-    // loaderUpdater(false);
+    loaderUpdater(false);
   };
   useEffect(() => {
     validateUser(user_id);
   }, []);
   return (
     <>
-      {/* {loader ? <Loader /> : <></>} */}
       <section className="ftco-section">
-        <div className="container">{userDetails ? <ShowUser {...props} user={userDetails} updater={() => {}} /> : <NoUser {...props} />}</div>
+        {loader ? (
+          <Wait />
+        ) : (
+          <>
+            <div className="container">{userDetails ? <ShowUser {...props} toUser={userDetails} /> : <NoUser {...props} />}</div>
+          </>
+        )}
       </section>
     </>
   );
@@ -72,19 +82,21 @@ const ShowUser = (props) => {
       alertUpdater(true);
       return;
     }
-    if (!props.user || !props.updater) {
+    if (!props.toUser) {
       alert("Encounter an error\nPlease Refresh");
       return;
     }
     const newMessage = {
-      user: props.user,
+      to: props.toUser,
       message: {
         name,
         message,
       },
+      from: props.user || {},
     };
-    props.updater(newMessage);
-    // props.history.push("/", { messageSent: props.user });
+    let result = await sendMessage(newMessage);
+    result = result && result[0];
+    props.history.push("/", { messageSent: result });
     nameUpdater("");
     messageUpdater("");
     return;
@@ -92,7 +104,7 @@ const ShowUser = (props) => {
   return (
     <>
       <div className="comment-form-wrap pt-5">
-        <h3 className="mb-5 h4 font-weight-bold">Send a Message</h3>
+        <h3 className="mb-5 h4 font-weight-bold">Send a Message {props.toUser._id ? " to #" + props.toUser._id : ""}</h3>
         <form onSubmit={formHandle} className="p-5 bg-light">
           <div className="form-group">
             <label htmlFor="name">Name</label>

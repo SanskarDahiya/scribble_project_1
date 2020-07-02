@@ -2,7 +2,7 @@ import React from "react";
 import { Route, Redirect, Switch } from "react-router";
 import SingleBlogSection from "./sectionComponents/singleBlogSection";
 
-const MultiBlogs = (props) => {
+const SendToUserMessage = (props) => {
   return (
     <>
       <Switch>
@@ -13,4 +13,4 @@ const MultiBlogs = (props) => {
   );
 };
 
-export default MultiBlogs;
+export default SendToUserMessage;

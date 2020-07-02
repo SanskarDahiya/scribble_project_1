@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { validateLogin } from "../sampleData/loginSetup";
+import { validateLogin, createUser } from "../sampleData/loginSetup";
 // import DirectSignIn from "./sectionComponents/DirectSignIn";
 const Login = (props) => {
   if (props && props.user) {
@@ -71,12 +71,11 @@ const LoginWrapper = (props) => {
       password: message,
       username: author,
     };
-    const resp = await validateLogin(newLogin);
-    if (resp && resp.result) {
-      // alert(resp.result);
-    }
-    if (resp && resp._id) {
-      alert(JSON.stringify(resp));
+    let resp = await validateLogin(newLogin);
+    if (resp && resp.length) {
+      resp = resp[0];
+      resp["username"] = resp.username || resp._id;
+      // alert(JSON.stringify(resp));
       userUpdater(resp);
     }
     return;
@@ -89,8 +88,8 @@ const LoginWrapper = (props) => {
           <h3>Sign In</h3>
 
           <div className="form-group">
-            <label>Username / Email address</label>
-            <input type="text" className="form-control" placeholder="Enter email" autoFocus={true} onChange={setAuthor} />
+            <label>Username</label>
+            <input type="text" className="form-control" placeholder="Enter username" autoFocus={true} onChange={setAuthor} />
           </div>
 
           <div className="form-group">
@@ -167,7 +166,10 @@ const Signup = (props) => {
       username: author,
       _id: author,
     };
-    alert(JSON.stringify(newLogin));
+    let result = await createUser(newLogin);
+    console.log(result);
+
+    // alert(JSON.stringify(newLogin));
     userUpdater(newLogin);
     return;
   };
