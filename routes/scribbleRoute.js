@@ -10,7 +10,7 @@ const { getMethods } = db;
 const api = getMethods(scribbleDB);
 const ObjectId = mongoose.Types.ObjectId;
 
-const createScribble = async req => {
+const createScribble = async (req) => {
   let { message, from, to } = req.body || {};
   let { _id } = to || {};
   if (!message || !to || !_id) {
@@ -30,11 +30,15 @@ const createScribble = async req => {
   if (from && from["_id"]) {
     from["_id"] = (from["_id"] + "").toLowerCase();
   }
-  result = await api.addData({ message, to, from });
+  try {
+    result = await api.addData({ message, to, from, _createdOn: new Date().getTime() });
+  } catch (err) {
+    throw err;
+  }
   return result ? [result] : [];
 };
 
-const getScribbleByUserId = async req => {
+const getScribbleByUserId = async (req) => {
   const { _id } = req.body;
   if (!_id) {
     let err = new Error();
@@ -47,7 +51,7 @@ const getScribbleByUserId = async req => {
   return result || [];
 };
 
-const addComment = async req => {
+const addComment = async (req) => {
   const { _id, comment } = req.body;
   if (!_id || !comment) {
     let err = new Error();
@@ -69,7 +73,7 @@ const addComment = async req => {
     err.code = "Already Commented";
     throw err;
   }
-  const update = { $set: { comment } };
+  const update = { $set: { comment, _updatedOn: new Date().getTime() } };
   await api.updateData(find, update);
   return [Object.assign(result, { comment })];
 };

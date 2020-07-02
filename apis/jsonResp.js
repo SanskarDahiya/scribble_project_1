@@ -11,7 +11,7 @@ const writeJsonResponse = (resp, { result = {} }) => {
     result = {
       error: { message: result.message, code: result.code || null },
       status: "error",
-      code: 500
+      code: 200
     };
     resp.writeHead(result.code, jsonResponseType);
     result = JSON.stringify(result);
