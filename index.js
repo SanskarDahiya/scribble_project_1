@@ -24,6 +24,8 @@ app.all("*", async (req, res) => {
   // All Extra pages
   res.sendStatus(401);
 });
+console.log("Starting Server NOW");
+console.log(JSON.stringify(process.env));
 
 const port = process.env.port || 9797;
 const server = app.listen(port, "0.0.0.0", () => {
