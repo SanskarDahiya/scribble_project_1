@@ -1,6 +1,6 @@
 import Axios from "axios";
-const serverUrl = "http://localhost:9797/";
-
+const serverUrl = process.env.backendUrl; //"http://localhost:9797/";
+console.log(process.env.backendUrl);
 export const validateLogin = async ({ username, password }) => {
   if (username && password) {
     return await fetch("user/validate", {
