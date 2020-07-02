@@ -1,6 +1,6 @@
 import Axios from "axios";
-const serverUrl = process.env.backendUrl; //"http://localhost:9797/";
-console.log(process.env.backendUrl);
+const serverUrl = "https://scribble-back.herokuapp.com/"; //"http://localhost:9797/";
+console.log(process.env);
 export const validateLogin = async ({ username, password }) => {
   if (username && password) {
     return await fetch("user/validate", {
