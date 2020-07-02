@@ -27,7 +27,7 @@ app.all("*", async (req, res) => {
 console.log("Starting Server NOW");
 console.log(JSON.stringify(process.env));
 
-const port = process.env.port || 9797;
+const port = process.env.PORT || 9797;
 const server = app.listen(port, "0.0.0.0", () => {
   console.log("Server is start:\n" + JSON.stringify(server.address()));
 });
