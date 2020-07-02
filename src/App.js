@@ -16,7 +16,7 @@ const App = (props) => {
     // used for login as well as logout
     loginUpdater(data);
     if (data) {
-      data["expired"] = new Date().getTime() + 1000 * 60;
+      data["expired"] = new Date().getTime() + 1000 * 60 * 60 * 24;
       localStorage.setItem(localStoragename, JSON.stringify(data));
     } else {
       localStorage.removeItem(localStoragename);

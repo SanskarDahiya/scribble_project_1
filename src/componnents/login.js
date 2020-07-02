@@ -6,7 +6,7 @@ const Login = (props) => {
   if (props && props.user) {
     props.history.push("/");
   }
-  const [isLogin, isLoginUpdater] = useState(false);
+  const [isLogin, isLoginUpdater] = useState(true);
   const [width, widthUpdater] = useState(window.innerWidth);
   const updateWindowDimensions = () => {
     widthUpdater(window.innerWidth);
