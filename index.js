@@ -12,7 +12,7 @@ app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use("/user", userRoute);
 app.use("/scribble", scribbleRoute);
-mongoose.connect(mongoDbURL, { useNewUrlParser: true, useUnifiedTopology: true }, err => {
+mongoose.connect(mongoDbURL, { useNewUrlParser: true, useUnifiedTopology: true }, (err) => {
   if (err) console.log("Unable to connect database");
   //   else console.log("Db Conn");
 });
@@ -24,6 +24,8 @@ app.all("*", async (req, res) => {
   // All Extra pages
   res.sendStatus(401);
 });
-const server = app.listen(9797, "0.0.0.0", () => {
+
+const port = process.env.port || 9797;
+const server = app.listen(port, "0.0.0.0", () => {
   console.log("Server is start:\n" + JSON.stringify(server.address()));
 });
