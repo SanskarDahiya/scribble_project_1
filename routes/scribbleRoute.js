@@ -32,6 +32,8 @@ const createScribble = async (req) => {
   }
   try {
     result = await api.addData({ message, to, from, _createdOn: new Date().getTime() });
+    console.log(result);
+
   } catch (err) {
     throw err;
   }
@@ -48,6 +50,8 @@ const getScribbleByUserId = async (req) => {
   }
   const query = { "to._id": (_id + "").toLowerCase() };
   const result = await api.getAllData(query);
+  console.log(result);
+
   return result || [];
 };
 
