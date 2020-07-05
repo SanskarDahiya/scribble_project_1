@@ -175,18 +175,18 @@ const ShowIndex = (props) => {
               <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFCvd2lu-exJVwt5zBX0hKUfC0nnM8fMXWSslK4gpLyg&s" />
             </div>
             <div>
-              <code style={{ position: "relative", paddingBottom: 25 }}>
-                Anything is possible when you have the right people there to support you{" "}
+              <div style={{ position: "relative" }}>
+                <code>Anything is possible when you have the right people there to support you </code>
                 <sub
                   style={{
                     position: "absolute",
-                    bottom: 0,
+                    bottom: -20,
                     right: 0,
                   }}
                 >
                   ~Misty Copeland
                 </sub>
-              </code>
+              </div>
               <br />
               <br />
               <Link to="/login">Click here to login/signup!</Link>
