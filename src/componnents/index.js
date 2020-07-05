@@ -112,9 +112,6 @@ const ShowIndex = (props) => {
               The final year is a very Financial year Placement, exams and many more worries are them and we are standing at the door of starting a
               whole new life be it for job, Higher studies ,Startup, business many more. <br />
               <p>But friends, they are the lifeline.</p>
-              <p>
-                <Link to="/login">Click here to login/signup!</Link>
-              </p>
               There has to be a way to make the{" "}
               <u>
                 <i>last leaving memories</i>
@@ -127,6 +124,7 @@ const ShowIndex = (props) => {
             </p>
           </div>
           <Link to="/login">Click here to login/signup!</Link>
+          <br />
           <br />
         </div>
       </div>
