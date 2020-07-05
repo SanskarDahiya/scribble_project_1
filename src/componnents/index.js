@@ -7,6 +7,18 @@ const Index = (props) => {
     (props && props.location && props.location.state && props.location.state.messageSent) || false
   );
   const isUserLoggin = props.user;
+  let alert_ = localStorage.getItem("ALERT") || {};
+  try {
+    alert_ = JSON.parse(alert_);
+  } catch (err) {
+    alert_ = { count: 0 };
+  }
+  // alert(JSON.stringify(alert_))
+  // alert(alert_["count"] === 0 || alert_["expire"] < new Date().getTime());
+  if (alert_["count"] === 0 || alert_["expire"] < new Date().getTime()) {
+    alert("ADDING UPDATE SOON!!!!\n\nThere will be a one time response to the message if and only if both users are logged in.\n\t\t\t\t\tThanks");
+    localStorage.setItem("ALERT", JSON.stringify({ count: 1, expire: new Date().getTime() + 1000 * 60 * 60 * 24 }));
+  }
   return (
     <>
       <section className="ftco-section">
@@ -47,7 +59,8 @@ const ShowMessages = (props) => {
             Share this message:{" "}
             <code>
               <a href={loc + "/" + props.user._id} target="_new">
-                Hey There, Let's celebrate scribble day in a new way.<br />
+                Hey There, Let's celebrate scribble day in a new way.
+                <br />
                 Click Here: {loc + "/" + props.user._id}
               </a>
             </code>
