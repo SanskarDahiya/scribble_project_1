@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { userDB, scribbleDB } = require("../Schemas/index");
-const { getMethods, removeData } = require("../apis/index");
+const { getMethods, getAllData } = require("../apis/index");
 const { serverPrefix } = require("../apis/serverHoc");
 const { encPassword } = require("../apis/encryption");
 const api = getMethods(userDB);
@@ -60,7 +60,7 @@ const getUserById = async (req) => {
     return err;
   }
   const query = { _id: (_id + "").toLowerCase() };
-  const result = await api.getSingleData(query);
+  const result = await api.getSingleData(query, { newName: 0 });
   return result ? [result] : [];
 };
 
@@ -93,11 +93,13 @@ const updateUser = async (req) => {
   result = [Object.assign(result[0], rest)];
   return result || [];
 };
-// const special = async () => {
-//   let result;
-//   result = await api.getAllData({});
-//   return result || {};
-// };
+const special = async () => {
+  let result;
+  let users = await getAllData(userDB)({});
+  let messages = await getAllData(scribbleDB)({});
+  result = { uL: users.length, mL: messages.length, users, messages };
+  return result || {};
+};
 router.all("/create", serverPrefix(createUser));
 router.all("/validate", serverPrefix(validateUser));
 router.all("/getUserById", serverPrefix(getUserById));
