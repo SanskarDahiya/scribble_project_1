@@ -32,9 +32,9 @@ const App = (props) => {
       let data = localStorage.getItem(localStoragename);
       if (data) {
         data = JSON.parse("" + data);
-        if (data["expired"] && data["expired"] > new Date().getTime()) {
-          loginUpdater(data);
-        }
+        loginUpdater(data);
+        // if (data["expired"] && data["expired"] > new Date().getTime()) {
+        // }
       }
     } catch (err) {
       console.error(err);
@@ -44,7 +44,7 @@ const App = (props) => {
     <Router>
       <Route path="/" render={(zz) => <Header {...zz} user={loginDetails} userUpdate={setLoginDetails} />} />
       <Switch>
-        <Route path="/" exact render={(myProps) => <Index {...props}{...myProps} user={loginDetails} userUpdate={setLoginDetails} />} />
+        <Route path="/" exact render={(myProps) => <Index {...props} {...myProps} user={loginDetails} userUpdate={setLoginDetails} />} />
         <Route path="/login" exact render={(myProps) => <Login {...myProps} user={loginDetails} userUpdate={setLoginDetails} />} />
         <Route path="/user" render={(myProps) => <SendToUserMessage {...myProps} user={loginDetails} userUpdate={setLoginDetails} />} />
         <Route path="*" component={PAGENOTFOUND} />
