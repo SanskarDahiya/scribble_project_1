@@ -92,11 +92,42 @@ const ShowIndex = (props) => {
   return (
     <>
       <div className="row">
-        <div className="col-lg-8 ">
+        <div className="col-lg-8">
           <h2 className="mb-3">{"SCRIBBLE 2020"}</h2>
-          Login to get special messages
-          <br />
+          <div>
+            <code>
+              Anything is possible when you have the right people there to support you <sub>~Misty Copeland</sub>
+            </code>
+            <br />
+            <br />
+            <Link to="/login">Click here to login/signup!</Link>
+          </div>
+          <div>
+            <code>HUMARE VICHAR</code>
+          </div>
+          <div>
+            <p>
+              There many events that occur before a college student graduates.
+              <br />
+              The final year is a very Financial year Placement, exams and many more worries are them and we are standing at the door of starting a
+              whole new life be it for job, Higher studies ,Startup, business many more. <br />
+              <p>But friends, they are the lifeline.</p>
+              <p>
+                <Link to="/login">Click here to login/signup!</Link>
+              </p>
+              There has to be a way to make the{" "}
+              <u>
+                <i>last leaving memories</i>
+              </u>{" "}
+              with these friends, who he became a family member in these years .Due to this pandemic no farewell , no annual fest, no scribble day was
+              there. As everything getting online.
+              <div>
+                <p>The scribble day can also be celebrated online. Let your friends write anything about you for you</p>
+              </div>
+            </p>
+          </div>
           <Link to="/login">Click here to login/signup!</Link>
+          <br />
         </div>
       </div>
     </>
