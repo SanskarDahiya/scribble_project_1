@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { validateLogin, createUser } from "../sampleData/loginSetup";
+import ErrorScreen from "./sectionComponents/ErrorScreen";
 // import DirectSignIn from "./sectionComponents/DirectSignIn";
 const Login = (props) => {
   if (props && props.user) {
     props.history.push("/");
   }
-  const [isLogin, isLoginUpdater] = useState(true);
+  const [error, errorUpdater] = useState(false);
+  const [isLogin, isLoginUpdater] = useState(false);
   const [width, widthUpdater] = useState(window.innerWidth);
   const updateWindowDimensions = () => {
     widthUpdater(window.innerWidth);
   };
+  const errorUpdater_ = (x) => errorUpdater(x);
   useEffect(() => {
     window.addEventListener("resize", updateWindowDimensions);
     return () => {
@@ -35,7 +38,20 @@ const Login = (props) => {
     <>
       <div style={{ width: "100%", alignItems: "center", display: "flex", justifyContent: "center", flexDirection: "column" }}>
         <div style={{ width: getWidth(width) }}>
-          {isLogin ? <LoginWrapper {...props} SwitchLogin={SwitchLogin} /> : <Signup {...props} SwitchLogin={SwitchLogin} />}
+          {error && (
+            <ErrorScreen
+              error={error}
+              onClick={() => {
+                errorUpdater(false);
+              }}
+            />
+          )}
+
+          {isLogin ? (
+            <LoginWrapper errorUpdater={errorUpdater_} {...props} SwitchLogin={SwitchLogin} />
+          ) : (
+            <Signup errorUpdater={errorUpdater_} {...props} SwitchLogin={SwitchLogin} />
+          )}
         </div>
       </div>
     </>
@@ -61,24 +77,32 @@ const LoginWrapper = (props) => {
   };
 
   const handelSubmit = async (e) => {
-    e.preventDefault();
-    alertUpdater(false);
-    if (!author || author.trim().length <= 0 || !message || message.trim().length <= 0) {
-      alertUpdater(true);
+    try {
+      e.preventDefault();
+      alertUpdater(false);
+      if (!author || author.trim().length <= 0 || !message || message.trim().length <= 0) {
+        alertUpdater(true);
+        return;
+      }
+      const newLogin = {
+        password: message,
+        username: author,
+      };
+      let resp = await validateLogin(newLogin);
+      if (resp && resp.length) {
+        resp = resp[0];
+        resp["username"] = resp.username || resp._id;
+        userUpdater(resp);
+      } else {
+        props.errorUpdater &&
+          props.errorUpdater({
+            name: "Invalid Credentials",
+          });
+      }
       return;
+    } catch (err) {
+      console.error(err);
     }
-    const newLogin = {
-      password: message,
-      username: author,
-    };
-    let resp = await validateLogin(newLogin);
-    if (resp && resp.length) {
-      resp = resp[0];
-      resp["username"] = resp.username || resp._id;
-      // alert(JSON.stringify(resp));
-      userUpdater(resp);
-    }
-    return;
   };
 
   return (
@@ -114,10 +138,8 @@ const LoginWrapper = (props) => {
             Forgot <Link to="/contact">password? Contact Admin</Link>
           </p>
           <p className="forgot-password text-right">
-            Don't have an account{" "}
-            <a href="#" onClick={props.SwitchLogin}>
-              sign up?
-            </a>
+            Don't have an account
+            <Link onClick={props.SwitchLogin}>sign up?</Link>
           </p>
         </form>
       </div>
@@ -154,24 +176,28 @@ const Signup = (props) => {
   };
 
   const handelSubmit = async (e) => {
-    e.preventDefault();
-    alertUpdater(false);
-    if (!password || password.trim().length <= 0 || !author || author.trim().length <= 0 || !message || message.trim().length <= 0) {
-      alertUpdater(true);
+    try {
+      e.preventDefault();
+      alertUpdater(false);
+      if (!password || password.trim().length <= 0 || !author || author.trim().length <= 0 || !message || message.trim().length <= 0) {
+        alertUpdater(true);
+        return;
+      }
+      const newLogin = {
+        password: password,
+        email: message,
+        username: author,
+        _id: author,
+      };
+      let result = await createUser(newLogin);
+      console.log(result);
+      // alert(JSON.stringify(newLogin));
+      userUpdater(newLogin);
       return;
+    } catch (err) {
+      console.log(err);
+      props.errorUpdater && props.errorUpdater({ name: err.message });
     }
-    const newLogin = {
-      password: password,
-      email: message,
-      username: author,
-      _id: author,
-    };
-    let result = await createUser(newLogin);
-    console.log(result);
-
-    // alert(JSON.stringify(newLogin));
-    userUpdater(newLogin);
-    return;
   };
 
   return (
@@ -199,10 +225,7 @@ const Signup = (props) => {
         </button>
         <p className="forgot-password text-right">
           {alertzz && "Please fill all fields\n"}
-          Already registered{" "}
-          <a href="#" onClick={props.SwitchLogin}>
-            sign in?
-          </a>
+          Already registered <Link onClick={props.SwitchLogin}>sign in?</Link>
         </p>
       </form>
     </div>
