@@ -187,12 +187,11 @@ const ShowIndex = (props) => {
             </div>
             <div>
               <p>
-                There many events that occur before a college student graduates.
                 <br />
-                The final year is a very Financial year Placement, exams and many more worries are them and we are standing at the door of starting a
-                whole new life be it for job, Higher studies ,Startup, business many more. <br />
-                <p>But friends, they are the lifeline.</p>
-                There has to be a way to make the{" "}
+                Many events that occur before college students graduate. The last year is a very important year. Placements, exams and many other
+                concerns are stands at the doorstep of starting a new life for jobs, higher studies, startups, businesses. <br />
+                <p>But friends, they are lifeline.</p>
+                There many events that occur before a college student graduates. There has to be a way to make the{" "}
                 <u>
                   <i>last leaving memories</i>
                 </u>{" "}
