@@ -138,7 +138,7 @@ const ShowNoMessageCard = (props) => {
           <br />
           Please share your link to your friends aka family to get messages.
           <br />
-          You Don't hav any messages yet.
+          You Don't have any messages yet.
         </div>
       </div>
     </>
@@ -191,14 +191,16 @@ const ShowIndex = (props) => {
                 Many events that occur before college students graduate. The last year is a very important year. Placements, exams and many other
                 concerns are stands at the doorstep of starting a new life for jobs, higher studies, startups, businesses. <br />
                 <p>But friends, they are lifeline.</p>
-                There many events that occur before a college student graduates. There has to be a way to make the{" "}
+                There many events that occur before a college student graduates. There must be a way to make the{" "}
                 <u>
-                  <i>last leaving memories</i>
+                  <i>
+                    last leaving memories <code>special</code>
+                  </i>
                 </u>{" "}
-                with these friends, who he became a family member in these years .Due to this pandemic no farewell , no annual fest, no scribble day
-                was there. As everything getting online.
+                with those friends, who have became members of our family over the years. Due to this pandemic there was neither a farewell, nor an
+                annual celebration and scribble day. Everything going digital.
                 <div>
-                  <p>The scribble day can also be celebrated online. Let your friends write anything about you for you</p>
+                  <p>So, This scribble day can also be celebrated online. Express your love to your friends through few words. </p>
                 </div>
               </p>
             </div>
