@@ -24,7 +24,7 @@ const Bottom = (props) => {
             This Website Is Made With&nbsp;
             <i className="icon-heart" aria-hidden="true" />
             &nbsp;
-            {(pathname.search("sanskar") > 0 || pathname.search("sourav") > 0) && "by Sourav and Sanskar"}
+            {/* {(pathname.search("sanskar") > 0 || pathname.search("sourav") > 0) && "by Sourav and Sanskar"} */}
           </p>
         </div>
       </div>
