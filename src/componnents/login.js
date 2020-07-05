@@ -161,7 +161,9 @@ const Signup = (props) => {
   const setAuthor = (e) => {
     e.preventDefault();
     alertUpdater(false);
-    authorUpdater(e.target.value);
+    const val = e.target.value;
+    authorUpdater(val);
+    console.log(val.match("^[a-zA-Z0-9_@]*$"));
   };
 
   const setMessage = (e) => {
@@ -183,6 +185,15 @@ const Signup = (props) => {
         alertUpdater(true);
         return;
       }
+      if (author.length < 8 || password.length < 8) {
+        props.errorUpdater({ name: "username or password Length must be greater than 8" });
+        return;
+      }
+      if (!author.match("^[a-zA-Z0-9_@]*$")) {
+        props.errorUpdater({ name: "Username contains only a-z,A-Z,0-9,$,_ only" });
+        return;
+      }
+
       const newLogin = {
         password: password,
         email: message,
@@ -207,7 +218,7 @@ const Signup = (props) => {
 
         <div className="form-group">
           <label>User name *will be used to login</label>
-          <input type="text" className="form-control" placeholder="User name" autoFocus={true} onChange={setAuthor} />
+          <input type="text" className="form-control" placeholder="User name" value={author} onChange={setAuthor} />
         </div>
 
         <div className="form-group">

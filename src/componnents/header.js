@@ -15,7 +15,7 @@ const Header = (props) => {
   }
   return (
     <>
-      <div
+      {/* <div
         style={{
           position: "absolute",
           top: 0,
@@ -27,7 +27,7 @@ const Header = (props) => {
           backgroundSize: "contain",
           backgroundImage: `url("${loc}/backgroundImage.jpg")`,
         }}
-      />
+      /> */}
       <div className="bg-top navbar-light">
         <div className="container">
           <div className="row no-gutters d-flex align-items-center align-items-stretch">
