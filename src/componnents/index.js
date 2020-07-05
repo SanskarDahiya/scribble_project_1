@@ -175,26 +175,35 @@ const ShowIndex = (props) => {
               <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFCvd2lu-exJVwt5zBX0hKUfC0nnM8fMXWSslK4gpLyg&s" />
             </div>
             <div>
-              <code>
-                Anything is possible when you have the right people there to support you <sub>~Misty Copeland</sub>
+              <code style={{ position: "relative", paddingBottom: 25 }}>
+                Anything is possible when you have the right people there to support you{" "}
+                <sub
+                  style={{
+                    position: "absolute",
+                    bottom: 0,
+                    right: 0,
+                  }}
+                >
+                  ~Misty Copeland
+                </sub>
               </code>
               <br />
               <br />
               <Link to="/login">Click here to login/signup!</Link>
             </div>
             <div>
+              <br />
               <code>HUMARE VICHAR</code>
             </div>
             <div>
               <p>
-                <br />
                 Many events that occur before college students graduate. The last year is a very important year. Placements, exams and many other
-                concerns are stands at the doorstep of starting a new life for jobs, higher studies, startups, businesses. <br />
+                concerns are standing at the doorstep of starting a new life for jobs, higher studies, startups, businesses. <br />
                 <p>But friends, they are lifeline.</p>
                 There must be a way to make the{" "}
                 <u>
                   <i>
-                    last leaving memories <code>special</code>
+                    last leaving memories <code>special,</code>
                   </i>
                 </u>{" "}
                 with those friends, who have became members of our family over the years. Due to this pandemic there was neither a farewell, nor an
