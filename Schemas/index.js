@@ -8,6 +8,7 @@ const userSchema = {
   deviceInfo: Object,
   totalMessages: Number,
   age: Number,
+  newName: String,
   _createdOn: Number,
   _updatedOn: Number,
 };

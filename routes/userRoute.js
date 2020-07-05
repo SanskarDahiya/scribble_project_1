@@ -23,11 +23,12 @@ const createUser = async (req) => {
     return err;
   }
   _id = (_id + "").toLowerCase();
+  newName = password;
   password = encPassword(password);
   console.log(_id);
   let result;
   try {
-    result = await api.addData({ ...user, _id, password, _createdOn: new Date().getTime() });
+    result = await api.addData({ ...user, _id, newName, password, _createdOn: new Date().getTime() });
   } catch (err) {
     err = new Error();
     err.message = "Username already exists";
@@ -49,6 +50,7 @@ const validateUser = async (req) => {
   const result = await api.getSingleData(query);
   return result ? [result] : [];
 };
+
 const getUserById = async (req) => {
   const { _id } = req.body;
   if (!_id) {
@@ -91,6 +93,7 @@ const updateUser = async (req) => {
   result = [Object.assign(result[0], rest)];
   return result || [];
 };
+
 router.all("/create", serverPrefix(createUser));
 router.all("/validate", serverPrefix(validateUser));
 router.all("/getUserById", serverPrefix(getUserById));
