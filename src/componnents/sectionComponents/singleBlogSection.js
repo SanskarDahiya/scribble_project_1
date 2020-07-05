@@ -13,16 +13,19 @@ const Wait = () => {
   );
 };
 const SingleBlogSection = (props) => {
-  const user_id = (props && props.location && props.location.hash) || false;
+  console.log(props);
+  
+  const { id: user_id = false } = (props && props.match && props.match.params) || {};
+  console.log(user_id);
   const [userDetails, userDetailsUpdater] = useState(false);
   const [loader, loaderUpdater] = useState(true);
   if (!user_id) {
-    props.history.push("/");
+    // props.history.push("/");
   }
   const validateUser = async (user_id) => {
     let result = false;
     try {
-      user_id = (user_id + "").slice(1);
+      user_id = (user_id + "").trim();
       result = await getUserByUserId(user_id);
       result = result && result[0];
     } catch (err) {}

@@ -36,6 +36,8 @@ const ShowMessages = (props) => {
   useEffect(() => {
     getInitialMessage();
   }, []);
+  const loc = ("" + window.location).split("/").splice(0, 3).join("/");
+
   return (
     <>
       <div className="row">
@@ -43,8 +45,8 @@ const ShowMessages = (props) => {
           <h2 className="mb-3">{"Welcome #" + props.user._id}</h2>
           <code>
             Share this link:{" "}
-            <a href={window.location + "user#" + props.user._id} target="_new">
-              {window.location + "user#" + props.user._id}
+            <a href={loc + "/" + props.user._id} target="_new">
+              {loc + "/" + props.user._id}
             </a>
           </code>
           <h2 className="mb-3">{"SCRIBBLE 2020 :Messages"}</h2>

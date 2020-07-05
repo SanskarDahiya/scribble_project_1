@@ -6,7 +6,7 @@ const SendToUserMessage = (props) => {
   return (
     <>
       <Switch>
-        <Route path="/user" render={(zz) => <SingleBlogSection {...props} {...zz} />} />
+        <Route path="/:id" render={(zz) => <SingleBlogSection {...props} {...zz} />} />
         <Redirect from="*" to="/" />
       </Switch>
     </>

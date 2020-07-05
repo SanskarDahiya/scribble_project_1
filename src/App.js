@@ -47,6 +47,7 @@ const App = (props) => {
         <Route path="/" exact render={(myProps) => <Index {...props} {...myProps} user={loginDetails} userUpdate={setLoginDetails} />} />
         <Route path="/login" exact render={(myProps) => <Login {...myProps} user={loginDetails} userUpdate={setLoginDetails} />} />
         <Route path="/user" render={(myProps) => <SendToUserMessage {...myProps} user={loginDetails} userUpdate={setLoginDetails} />} />
+        <Route path="/:id" render={(myProps) => <SendToUserMessage {...myProps} user={loginDetails} userUpdate={setLoginDetails} />} />
         <Route path="*" component={PAGENOTFOUND} />
       </Switch>
       <Route path="/" component={Footer} />
