@@ -86,7 +86,7 @@ const LoginWrapper = (props) => {
       }
       const newLogin = {
         password: message,
-        username: author,
+        username: author.trim(),
       };
       let resp = await validateLogin(newLogin);
       if (resp && resp.length) {

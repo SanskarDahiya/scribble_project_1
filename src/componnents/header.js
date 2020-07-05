@@ -20,7 +20,7 @@ const Header = (props) => {
           <div className="row no-gutters d-flex align-items-center align-items-stretch">
             <div className="col-md-6 d-flex align-items-center py-4">
               <Link className="navbar-brand" to="/">
-                <div style={{ ...whiteText }}>LOGO</div>
+                <div style={{ ...whiteText }}>SCRIBBLE-DAY</div>
               </Link>
             </div>
             <div className="col-md-6 d-block align-items-center py-4">
