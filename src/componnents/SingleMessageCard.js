@@ -29,6 +29,7 @@ const SingleMessageCard = (props) => {
             justifyContent: "center",
             borderBottomLeftRadius: 50,
             borderTopRightRadius: 50,
+            paddingBottom:25,
             alignItems: "center",
             color: `rgb(${r},${g},${b})`,
           }}
