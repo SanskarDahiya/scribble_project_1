@@ -1,6 +1,13 @@
 import Axios from "axios";
+import dotenv from "dotenv";
 const serverUrl = "https://scribble-back.herokuapp.com/"; //"http://localhost:9797/";
-console.log(process.env);
+console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+const result = dotenv.config();
+if (result.error) {
+  console.log(result.error, "<<<ERROR ENCOUNTER");
+}
+console.log(result.parsed, "<<<Result Present");
+console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 export const validateLogin = async ({ username, password }) => {
   if (username && password) {
     return await fetch("user/validate", {
