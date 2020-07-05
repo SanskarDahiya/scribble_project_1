@@ -8,13 +8,26 @@ const Header = (props) => {
     return;
   };
   // console.log(props, props.location.pathname.search("login"));
-
+  let loc = ("" + window.location).split("/").splice(0, 3).join("/");
   let isNotLoginPage = false;
   if (props && props.location && props.location.pathname) {
     isNotLoginPage = (props.location.pathname + "").search("login") === -1;
   }
   return (
     <>
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          opacity: 0.4,
+          zIndex:-1,
+          minWidth: "109%",
+          minHeight: "100%",
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "contain",
+          backgroundImage: `url("${loc}/backgroundImage.jpg")`,
+        }}
+      />
       <div className="bg-top navbar-light">
         <div className="container">
           <div className="row no-gutters d-flex align-items-center align-items-stretch">
