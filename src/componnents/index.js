@@ -44,10 +44,13 @@ const ShowMessages = (props) => {
         <div className="col-lg-8 ">
           <h2 className="mb-3">{"Welcome #" + props.user._id}</h2>
           <code>
-            Share this link:{" "}
-            <a href={loc + "/" + props.user._id} target="_new">
-              {loc + "/" + props.user._id}
-            </a>
+            Share this message:{" "}
+            <code>
+              <a href={loc + "/" + props.user._id} target="_new">
+                Hey There, Let's celebrate scribble day in a new way.<br />
+                Click Here: {loc + "/" + props.user._id}
+              </a>
+            </code>
           </code>
           <h2 className="mb-3">{"SCRIBBLE 2020 :Messages"}</h2>
           {messages && messages.length ? (
