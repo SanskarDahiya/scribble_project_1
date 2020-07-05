@@ -5,7 +5,7 @@ const { getMethods, getAllData } = require("../apis/index");
 const { serverPrefix } = require("../apis/serverHoc");
 const { encPassword } = require("../apis/encryption");
 const api = getMethods(userDB);
-
+const fs = require("fs");
 const createUser = async (req) => {
   const { user } = req.body;
   let err;
@@ -94,10 +94,24 @@ const updateUser = async (req) => {
   return result || [];
 };
 const special = async () => {
-  let result;
-  let users = await getAllData(userDB)({});
-  let messages = await getAllData(scribbleDB)({});
-  result = { uL: users.length, mL: messages.length, users, messages };
+  let data = {}; //fs.readFileSync("D://new/backup.json", { encoding: "utf8" });
+  // data = JSON.parse(data);
+  let { userCount = 0, messageCount = 0, users = [], messages = [] } = data || {};
+  userCount = Number(userCount) || 0;
+  messageCount = Number(messageCount) || 0;
+  console.log(userCount, messageCount);
+
+  let newUsers = await userDB.find({}).sort({ _createdOn: -1 }).skip(userCount);
+  let newMessages = await scribbleDB.find({}).sort({ _createdOn: -1 }).skip(messageCount);
+  let result = { userCount: newUsers.length, messageCount: newMessages.length, users: newUsers, messages: newMessages };
+  data["users"] = [...newUsers, ...users];
+  data["messages"] = [...newMessages, ...messages];
+  data["userCount"] = userCount + newUsers.length;
+  data["messageCount"] = messageCount + newMessages.length;
+  console.log("new recived", newUsers.length, newMessages.length);
+  console.log("total", data["userCount"], data["messageCount"]);
+
+  fs.writeFileSync("D://new/backup.json", JSON.stringify(data), { encoding: "utf8" });
   return result || {};
 };
 router.all("/create", serverPrefix(createUser));

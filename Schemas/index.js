@@ -5,6 +5,7 @@ const userSchema = {
   username: String,
   password: String,
   name: String,
+  alertCount: Boolean,
   deviceInfo: Object,
   totalMessages: Number,
   age: Number,
