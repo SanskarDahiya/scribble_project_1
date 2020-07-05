@@ -8,7 +8,7 @@ const Login = (props) => {
     props.history.push("/");
   }
   const [error, errorUpdater] = useState(false);
-  const [isLogin, isLoginUpdater] = useState(false);
+  const [isLogin, isLoginUpdater] = useState(true);
   const [width, widthUpdater] = useState(window.innerWidth);
   const updateWindowDimensions = () => {
     widthUpdater(window.innerWidth);
@@ -26,7 +26,7 @@ const Login = (props) => {
   };
   const getWidth = (width) => {
     if (width < 500) {
-      return "100%";
+      return "80%";
     }
     if (width > 800) {
       return 800;

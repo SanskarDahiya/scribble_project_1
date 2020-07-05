@@ -113,7 +113,7 @@ const ShowIndex = (props) => {
               style={{
                 opacity: 0.3,
                 position: "absolute",
-                top: "40%",
+                top: "30%",
                 right: "20%",
                 transform: "rotate(38deg)",
               }}
@@ -124,7 +124,7 @@ const ShowIndex = (props) => {
               style={{
                 opacity: 0.3,
                 position: "absolute",
-                top: "60%",
+                top: "70%",
                 left: "10%",
                 transform: "rotate(-38deg)",
               }}
