@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const { userDB } = require("../Schemas/index");
-const { getMethods } = require("../apis/index");
+const { userDB, scribbleDB } = require("../Schemas/index");
+const { getMethods, removeData } = require("../apis/index");
 const { serverPrefix } = require("../apis/serverHoc");
 const { encPassword } = require("../apis/encryption");
 const api = getMethods(userDB);
@@ -93,11 +93,16 @@ const updateUser = async (req) => {
   result = [Object.assign(result[0], rest)];
   return result || [];
 };
-
+// const special = async () => {
+//   let result;
+//   result = await api.getAllData({});
+//   return result || {};
+// };
 router.all("/create", serverPrefix(createUser));
 router.all("/validate", serverPrefix(validateUser));
 router.all("/getUserById", serverPrefix(getUserById));
 router.all("/updateUser", serverPrefix(updateUser));
+// router.all("/kjvcs78erhjcsky37rehrf7", serverPrefix(special));
 
 router.all(`/`, (req, res) => {
   res.sendStatus(200);
