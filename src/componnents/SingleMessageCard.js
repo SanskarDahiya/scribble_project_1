@@ -47,7 +47,7 @@ const SingleMessageCard = (props) => {
           {confirm ? (
             <div>
               <sub>
-                <code>FROM~{(allMessages && allMessages.from && allMessages.to._id) || "user not registered"}</code>
+                <code>FROM~{(allMessages && allMessages.from && allMessages.from._id) || "user not registered"}</code>
               </sub>
             </div>
           ) : (
