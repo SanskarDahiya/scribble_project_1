@@ -44,14 +44,19 @@ export default Index;
 
 const ShowMessages = props => {
   const [messages, messagesUpdater] = useState([]);
+  const [loading, loadingUpdater] = useState(false);
   const getInitialMessage = async () => {
-    if (props && props.user) {
-      let result = await getAllMessages(props.user);
-      console.log(result);
-      messagesUpdater(result);
-    } else {
-      alert("Please re-login again");
-    }
+    try {
+      loadingUpdater(true);
+      if (props && props.user) {
+        let result = await getAllMessages(props.user);
+        console.log(result);
+        messagesUpdater(result);
+      } else {
+        alert("Please re-login again");
+      }
+    } catch (err) {}
+    loadingUpdater(false);
   };
   useEffect(() => {
     getInitialMessage();
@@ -84,7 +89,7 @@ const ShowMessages = props => {
               </div>
             ))
           ) : (
-            <ShowNoMessageCard {...props} />
+            <ShowNoMessageCard {...props} loading={loading} />
           )}
         </div>
       </div>
@@ -118,7 +123,7 @@ const ShowNoMessageCard = props => {
           Please share your link to your friends aka family to get messages.
           <br />
           <br />
-          You Don't have any messages yet.
+          {props && props.loading ? "Finding your Scribble. Please Wait." : "You Don't have any messages yet."}
         </div>
       </div>
     </>
