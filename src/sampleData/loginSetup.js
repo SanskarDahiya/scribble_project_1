@@ -33,7 +33,7 @@ export const getScribbleMessages = async () => {
   return await fetch("scribble/getPublicScribbles");
 };
 
-const fetch = async (suffix, params) => {
+const fetch = async (suffix, params = {}) => {
   const result = await Axios.post(serverUrl + suffix, params);
   const { data = [] } = result || {};
   if (data.error) {
