@@ -26,7 +26,7 @@ export const sendMessage = async data => {
 
 export const getAllMessages = async user => {
   if (user) {
-    return await fetch("scribble/getScribbleByUserId", user);
+    return await fetch("scribble/getScribbleByUserId", { user });
   }
 };
 
