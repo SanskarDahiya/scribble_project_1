@@ -8,6 +8,7 @@ const { serverPrefix } = require("../apis/serverHoc");
 const { encPassword } = require("../apis/encryption");
 const { getMethods } = db;
 const scribble = getMethods(scribbleDB);
+const user__DB = getMethods(userDB);
 const ObjectId = mongoose.Types.ObjectId;
 const conn = getMethods(connectionDB);
 
@@ -30,6 +31,12 @@ const createScribble = async req => {
   to["_id"] = (_id + "").toLowerCase();
   if (from && from["_id"]) {
     from["_id"] = (from["_id"] + "").toLowerCase();
+  } else {
+    if (from && from.device && from.device._id) {
+      let userData = await user__DB.getSingleData({ "device._id": from.device._id });
+      let { _id: user___ID } = userData || {};
+      from = { _id: user___ID, device: from.device };
+    }
   }
   try {
     result = await scribble.addData({ message, to, deleted: false, from, _createdOn: new Date().getTime() });
