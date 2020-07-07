@@ -80,34 +80,39 @@ export default App;
 const WillBeAdded = props => {
   return (
     <>
-      <div className="row">
-        <div className="col-lg-8">
-          <h2 className="mb-3">{"SCRIBBLE 2020"}</h2>
-          <div style={{ position: "relative" }}>
-            <div style={{ position: "relative" }}>
-              <code>Anything is possible when you have the right people there to support you </code>
-              <sub
-                style={{
-                  position: "absolute",
-                  bottom: -20,
-                  right: 0
-                }}
-              >
-                ~Misty Copeland
-              </sub>
-            </div>
-            <br />
-            <br />
-            <Link to="/login">Click here to login/signup!</Link>
+      <section className="ftco-section">
+        <div className="container">
+          <div className="row">
+            <div className="col-lg-8">
+              <h2 className="mb-3">{"SCRIBBLE 2020"}</h2>
+              <div style={{ position: "relative" }}>
+                <div style={{ position: "relative" }}>
+                  <code>Anything is possible when you have the right people there to support you </code>
+                  <sub
+                    style={{
+                      position: "absolute",
+                      bottom: -20,
+                      right: 0
+                    }}
+                  >
+                    ~Misty Copeland
+                  </sub>
+                </div>
+                <br />
+                <br />
+                <Link to="/login">Click here to login/signup!</Link>
 
-            <h2>Soon Adding This Exiting Feature</h2>
-            <p>
-              Here, you can post your scribble as public or write anything to us via username <code>nazdeekiyaan</code>.
-              <br />
-            </p>
+                <h2>Soon Adding This Exiting Feature</h2>
+                <p>
+                  Here, you can post your scribble as public or write anything to us via username{" "}
+                  <code>nazdeekiyaan</code>.
+                  <br />
+                </p>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      </section>
     </>
   );
 };
