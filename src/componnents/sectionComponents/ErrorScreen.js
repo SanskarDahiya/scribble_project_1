@@ -1,6 +1,6 @@
 import React from "react";
 
-const ErrorScreen = (props) => {
+const ErrorScreen = props => {
   const onClick = props.onClick;
   let error = props.error;
   if (!onClick || !error || !(error instanceof Object)) {
@@ -14,7 +14,7 @@ const ErrorScreen = (props) => {
         <div className={"container"}>
           <div
             style={{
-              zIndex:10000,
+              zIndex: 10000,
               position: "absolute",
               top: 0,
               bottom: 0,
@@ -25,7 +25,7 @@ const ErrorScreen = (props) => {
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              flexDirection: "column",
+              flexDirection: "column"
             }}
           >
             <div
@@ -36,7 +36,7 @@ const ErrorScreen = (props) => {
                 display: "flex",
                 justifyContent: "space-evenly",
                 alignItems: "center",
-                flexDirection: "column",
+                flexDirection: "column"
               }}
             >
               <div>Warning!</div>
@@ -54,7 +54,7 @@ const ErrorScreen = (props) => {
                     display: "flex",
                     justifyContent: "space-evenly",
                     alignItems: "center",
-                    flexDirection: "column",
+                    flexDirection: "column"
                   }}
                 >
                   okay

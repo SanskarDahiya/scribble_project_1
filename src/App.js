@@ -9,10 +9,10 @@ import PAGENOTFOUND from "./componnents/pageNotFound";
 import Login from "./componnents/login";
 
 const localStoragename = "loginCredentials";
-const App = (props) => {
+const App = props => {
   const [loginDetails, loginUpdater] = useState(false);
   // const [loginDetails, loginUpdater] = useState({ _id: "kunal", username: "admin" });
-  const setLoginDetails = (data) => {
+  const setLoginDetails = data => {
     try {
       // used for login as well as logout
       loginUpdater(data);
@@ -32,6 +32,11 @@ const App = (props) => {
       let data = localStorage.getItem(localStoragename);
       if (data) {
         data = JSON.parse("" + data);
+        if (!data.conn) {
+          localStorage.removeItem(localStoragename);
+          alert("please re-login, we are upgrading our services.\nIf issue arrive, please wait");
+          return;
+        }
         loginUpdater(data);
         // if (data["expired"] && data["expired"] > new Date().getTime()) {
         // }
@@ -42,12 +47,26 @@ const App = (props) => {
   }, []);
   return (
     <Router>
-      <Route path="/" render={(zz) => <Header {...zz} user={loginDetails} userUpdate={setLoginDetails} />} />
+      <Route path="/" render={zz => <Header {...zz} user={loginDetails} userUpdate={setLoginDetails} />} />
       <Switch>
-        <Route path="/" exact render={(myProps) => <Index {...props} {...myProps} user={loginDetails} userUpdate={setLoginDetails} />} />
-        <Route path="/login" exact render={(myProps) => <Login {...myProps} user={loginDetails} userUpdate={setLoginDetails} />} />
-        <Route path="/user" render={(myProps) => <SendToUserMessage {...myProps} user={loginDetails} userUpdate={setLoginDetails} />} />
-        <Route path="/:id" render={(myProps) => <SendToUserMessage {...myProps} user={loginDetails} userUpdate={setLoginDetails} />} />
+        <Route
+          path="/"
+          exact
+          render={myProps => <Index {...props} {...myProps} user={loginDetails} userUpdate={setLoginDetails} />}
+        />
+        <Route
+          path="/login"
+          exact
+          render={myProps => <Login {...myProps} user={loginDetails} userUpdate={setLoginDetails} />}
+        />
+        <Route
+          path="/user"
+          render={myProps => <SendToUserMessage {...myProps} user={loginDetails} userUpdate={setLoginDetails} />}
+        />
+        <Route
+          path="/:id"
+          render={myProps => <SendToUserMessage {...myProps} user={loginDetails} userUpdate={setLoginDetails} />}
+        />
         <Route path="*" component={PAGENOTFOUND} />
       </Switch>
       <Route path="/" component={Footer} />

@@ -44,6 +44,7 @@ const SingleMessageCard = (props) => {
           <div>
             <p>{message}</p>
           </div>
+
           {confirm ? (
             <div>
               <sub>
