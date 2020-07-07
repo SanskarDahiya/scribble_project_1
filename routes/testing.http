@@ -28,6 +28,7 @@ Content-Type: application/json
 {
         "_id":"SanskarDahiya"
 }
+
 #####################
 post http://localhost:9797/user/updateUser
 Content-Type: application/json
@@ -40,8 +41,6 @@ Content-Type: application/json
         }
 }
 
-
-
 #####################
 post http://localhost:9797/scribble/create
 Content-Type: application/json
@@ -51,7 +50,6 @@ Content-Type: application/json
         "to":{"_id":"kunalJain"},
        "from":{"device":"kukoo"}
 }
-
 
 #####################
 post http://localhost:9797/scribble/getScribbleByUserId

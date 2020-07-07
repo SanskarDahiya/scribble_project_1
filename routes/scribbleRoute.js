@@ -11,8 +11,9 @@ const scribble = getMethods(scribbleDB);
 const user__DB = getMethods(userDB);
 const ObjectId = mongoose.Types.ObjectId;
 const conn = getMethods(connectionDB);
+// scribble.updateData({ _id: ObjectId("5f0499b58230ad0017105ef1") }, { $set: { "message.name": "Secret Well Wisher" } }).then((s) => console.log(s));
 
-const createScribble = async req => {
+const createScribble = async (req) => {
   let { message, from, to } = req.body || {};
   let { _id } = to || {};
   if (!message || !to || !_id) {
@@ -51,7 +52,7 @@ const createScribble = async req => {
   return result ? [result] : [];
 };
 
-const getScribbleByUserId = async req => {
+const getScribbleByUserId = async (req) => {
   const { user, _id__ } = req.body;
   if (!user || !user.conn) {
     let err = new Error();
@@ -79,13 +80,13 @@ const getScribbleByUserId = async req => {
   }
 };
 
-const getPublicScribbles = async req => {
+const getPublicScribbles = async (req) => {
   const query = { $and: [{ $or: [{ "to._id": "nazdeekiyaan" }, { isPublic: true }] }, { deleted: false }] };
   const result = await scribble.getAllData(query);
   return result || [];
 };
 
-const addComment = async req => {
+const addComment = async (req) => {
   const { _id, comment } = req.body;
   if (!_id || !comment) {
     let err = new Error();
