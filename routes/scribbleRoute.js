@@ -2,15 +2,16 @@
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
-const { scribbleDB, userDB } = require("../Schemas/index");
+const { scribbleDB, userDB, connectionDB } = require("../Schemas/index");
 const db = require("../apis/index");
 const { serverPrefix } = require("../apis/serverHoc");
 const { encPassword } = require("../apis/encryption");
 const { getMethods } = db;
-const api = getMethods(scribbleDB);
+const scribble = getMethods(scribbleDB);
 const ObjectId = mongoose.Types.ObjectId;
+const conn = getMethods(connectionDB);
 
-const createScribble = async (req) => {
+const createScribble = async req => {
   let { message, from, to } = req.body || {};
   let { _id } = to || {};
   if (!message || !to || !_id) {
@@ -31,27 +32,38 @@ const createScribble = async (req) => {
     from["_id"] = (from["_id"] + "").toLowerCase();
   }
   try {
-    result = await api.addData({ message, to, from, _createdOn: new Date().getTime() });
+    result = await scribble.addData({ message, to, from, _createdOn: new Date().getTime() });
   } catch (err) {
     throw err;
   }
   return result ? [result] : [];
 };
 
-const getScribbleByUserId = async (req) => {
-  const { _id } = req.body;
-  if (!_id) {
+const getScribbleByUserId = async req => {
+  const { user } = req.body;
+  if (!user || !user.conn) {
     let err = new Error();
     err.message = "Insufficient Params";
     err.code = "Insufficient Params";
     throw err;
   }
-  const query = { "to._id": (_id + "").toLowerCase() };
-  const result = await api.getAllData(query);
-  return result || [];
+  let connectionResult = await conn.getSingleData({ _id: user.conn });
+  const time = new Date().getTime();
+  console.log(connectionResult);
+
+  if (connectionResult && connectionResult.user && connectionResult.user._id && connectionResult._expireOn > time) {
+    const query = { "to._id": (connectionResult.user._id + "").toLowerCase() };
+    const result = await scribble.getAllData(query);
+    return result || [];
+  } else {
+    let err = new Error();
+    err.message = "Session Expire! Please login again";
+    err.code = "Session Expire";
+    throw err;
+  }
 };
 
-const addComment = async (req) => {
+const addComment = async req => {
   const { _id, comment } = req.body;
   if (!_id || !comment) {
     let err = new Error();
@@ -60,7 +72,7 @@ const addComment = async (req) => {
     throw err;
   }
   const find = { _id: ObjectId(_id) };
-  const result = await api.getSingleData(find);
+  const result = await scribble.getSingleData(find);
   if (!result) {
     let err = new Error();
     err.message = "Scribble Not Found";
@@ -74,7 +86,7 @@ const addComment = async (req) => {
     throw err;
   }
   const update = { $set: { comment, _updatedOn: new Date().getTime() } };
-  await api.updateData(find, update);
+  await scribble.updateData(find, update);
   return [Object.assign(result, { comment })];
 };
 

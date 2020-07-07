@@ -1,12 +1,14 @@
 const express = require("express");
 const router = express.Router();
-const { userDB, scribbleDB } = require("../Schemas/index");
+const { userDB, scribbleDB, connectionDB } = require("../Schemas/index");
 const { getMethods, getAllData } = require("../apis/index");
 const { serverPrefix } = require("../apis/serverHoc");
 const { encPassword } = require("../apis/encryption");
-const api = getMethods(userDB);
+const uuid = require("uuid").v4;
+const user = getMethods(userDB);
+const conn = getMethods(connectionDB);
 const fs = require("fs");
-const createUser = async (req) => {
+const createUser = async req => {
   const { user } = req.body;
   let err;
   let { password, _id } = user || {};
@@ -28,7 +30,7 @@ const createUser = async (req) => {
   console.log(_id);
   let result;
   try {
-    result = await api.addData({ ...user, _id, newName, password, _createdOn: new Date().getTime() });
+    result = await user.addData({ ...user, _id, newName, password, _createdOn: new Date().getTime() });
   } catch (err) {
     err = new Error();
     err.message = "Username already exists";
@@ -38,7 +40,7 @@ const createUser = async (req) => {
   return result ? [result] : [];
 };
 
-const validateUser = async (req) => {
+const validateUser = async req => {
   const { username, password } = req.body;
   if (!username || !password) {
     let err = new Error();
@@ -47,11 +49,30 @@ const validateUser = async (req) => {
     return err;
   }
   const query = { $and: [{ _id: (username + "").toLowerCase() }, { password: encPassword(password) }] };
-  const result = await api.getSingleData(query);
+  let result = await user.getSingleData(query, { newName: 0 });
+  if (result) {
+    let connectionResult = await conn.getSingleData({ user: { _id: result._id } });
+    const time = new Date().getTime();
+    if (!connectionResult || connectionResult._expireOn < time) {
+      connectionResult = {
+        _id: uuid(),
+        _createdOn: time,
+        _expireOn: time + 1000 * 60 * 60,
+        user: { _id: result._id }
+      };
+      await conn.addData(connectionResult);
+    }
+    result = {
+      _id: result._id,
+      username: result.username,
+      _createdOn: result._createdOn,
+      conn: connectionResult._id
+    };
+  }
   return result ? [result] : [];
 };
 
-const getUserById = async (req) => {
+const getUserById = async req => {
   const { _id } = req.body;
   if (!_id) {
     let err = new Error();
@@ -60,11 +81,11 @@ const getUserById = async (req) => {
     return err;
   }
   const query = { _id: (_id + "").toLowerCase() };
-  const result = await api.getSingleData(query, { newName: 0 });
+  const result = await user.getSingleData(query, { newName: 0 });
   return result ? [result] : [];
 };
 
-const updateUser = async (req) => {
+const updateUser = async req => {
   const { _id, data = {} } = req.body;
   if (!_id || !data) {
     let err = new Error();
@@ -80,7 +101,7 @@ const updateUser = async (req) => {
     return err;
   }
   const find = { _id: (_id + "").toLowerCase() };
-  let result = await api.getAllData(find);
+  let result = await user.getAllData(find);
   if (!result || !result[0]) {
     let err = new Error();
     err.message = "User Not Found";
@@ -89,7 +110,7 @@ const updateUser = async (req) => {
   }
   rest[" _updatedOn"] = new Date().getTime();
   const update = { $set: rest };
-  await api.updateData(find, update);
+  await user.updateData(find, update);
   result = [Object.assign(result[0], rest)];
   return result || [];
 };
@@ -101,8 +122,14 @@ const special = async () => {
   messageCount = Number(messageCount) || 0;
   console.log(userCount, messageCount);
 
-  let newUsers = await userDB.find({}).sort({ _createdOn: -1 }).skip(userCount);
-  let newMessages = await scribbleDB.find({}).sort({ _createdOn: -1 }).skip(messageCount);
+  let newUsers = await userDB
+    .find({})
+    .sort({ _createdOn: -1 })
+    .skip(userCount);
+  let newMessages = await scribbleDB
+    .find({})
+    .sort({ _createdOn: -1 })
+    .skip(messageCount);
   let result = { userCount: newUsers.length, messageCount: newMessages.length, users: newUsers, messages: newMessages };
   data["users"] = [...newUsers, ...users];
   data["messages"] = [...newMessages, ...messages];

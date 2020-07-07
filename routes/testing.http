@@ -15,8 +15,8 @@ post http://localhost:9797/user/validate
 Content-Type: application/json
 
 {    
-        "username":"SanskarDahiya",
-        "password":"123456789"
+        "username":"kunaljain",
+        "password":"12345678"
 }
 #####################
 post http://localhost:9797/user/getUserById
@@ -55,7 +55,12 @@ post http://localhost:9797/scribble/getScribbleByUserId
 Content-Type: application/json
 
 {
-        "_id":"sanskarDahiya"     
+        "user":{
+    "_id": "kunaljain",
+    "username": "KunalJain",
+    "_createdOn": 1593952794195,
+    "conn": "429a943b-e7fa-42b1-b290-351fb22f8b70"
+  }
 }
 
 #####################
