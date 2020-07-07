@@ -99,6 +99,8 @@ const ShowUser = props => {
       return;
     }
     loadingUpdater(true);
+    console.log("sending message");
+
     let deviceId = localStorage.getItem(deviceUuid);
     if (!deviceId) {
       deviceId = uuid();
@@ -125,9 +127,14 @@ const ShowUser = props => {
       },
       from: myUser
     };
-    let result = await sendMessage(newMessage);
-    result = result && result[0];
-    props.history.push("/", { messageSent: result });
+    try {
+      let result = await sendMessage(newMessage);
+      result = result && result[0];
+      props.history.push("/", { messageSent: result });
+    } catch (err) {
+      alert('Please refresh')
+      console.log(err);
+    }
     nameUpdater("");
     messageUpdater("");
     loadingUpdater(false);
