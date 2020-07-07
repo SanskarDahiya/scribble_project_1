@@ -1,11 +1,6 @@
 import React from "react";
 
-const SingleMessageCard = (props) => {
-  let confirm = false;
-  let name_ = (props.user.username + "").toLowerCase() === (props.user._id + "").toLowerCase() ? props.user._id : false;
-  if (name_ && (name_.search("sanskardahiya") || name_.search("kunaljain") || name_.search("souravbansal"))) {
-    confirm = true;
-  }
+const SingleMessageCard = props => {
   const { message: allMessages = {} } = props || {};
   const { message: { message = "", name = "" } = {} } = allMessages || {};
   const { index = -1 } = props || {};
@@ -38,31 +33,12 @@ const SingleMessageCard = (props) => {
             paddingBottom: 25,
             alignItems: "center",
             flexDirection: "column",
-            color: `rgb(${r},${g},${b})`,
+            color: `rgb(${r},${g},${b})`
           }}
         >
           <div>
             <p>{message}</p>
           </div>
-
-          {confirm ? (
-            <div>
-              <sub>
-                <code>FROM~{(allMessages && allMessages.from && allMessages.from._id) || "user not registered"}</code>
-              </sub>
-            </div>
-          ) : (
-            <></>
-          )}
-          {confirm ? (
-            <div>
-              <sub>
-                <code>TO~{(allMessages && allMessages.to && allMessages.to._id) || "unknown"}</code>
-              </sub>
-            </div>
-          ) : (
-            <></>
-          )}
           <div>
             <sub>
               <code>NAME~ {name || "unknown"}</code>

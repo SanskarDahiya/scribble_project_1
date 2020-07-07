@@ -7,6 +7,7 @@ import Index from "./componnents";
 import SendToUserMessage from "./componnents/multiBlog";
 import PAGENOTFOUND from "./componnents/pageNotFound";
 import Login from "./componnents/login";
+import Trends from "./componnents/trends";
 const loc = ("" + window.location)
   .split("/")
   .splice(0, 3)
@@ -62,7 +63,11 @@ const App = props => {
           exact
           render={myProps => <Login {...myProps} user={loginDetails} userUpdate={setLoginDetails} />}
         />
-        <Route path="/trends" exact render={WillBeAdded} />
+        <Route
+          path="/trends"
+          exact
+          render={myProps => <Trends {...props} {...myProps} user={loginDetails} userUpdate={setLoginDetails} />}
+        />
         <Route
           path="/user"
           render={myProps => <SendToUserMessage {...myProps} user={loginDetails} userUpdate={setLoginDetails} />}
@@ -79,43 +84,3 @@ const App = props => {
 };
 
 export default App;
-
-const WillBeAdded = props => {
-  return (
-    <>
-      <section className="ftco-section">
-        <div className="container">
-          <div className="row">
-            <div className="col-lg-8">
-              <h2 className="mb-3">{"SCRIBBLE 2020"}</h2>
-              <div style={{ position: "relative" }}>
-                <div style={{ position: "relative" }}>
-                  <code>Anything is possible when you have the right people there to support you </code>
-                  <sub
-                    style={{
-                      position: "absolute",
-                      bottom: -20,
-                      right: 0
-                    }}
-                  >
-                    ~Misty Copeland
-                  </sub>
-                </div>
-                <br />
-                <br />
-                <Link to="/login">Click here to login/signup!</Link>
-
-                <h2>Soon Adding This Exiting Feature</h2>
-                <p>
-                  Here, you can post your scribble as public or write anything to us via username{" "}
-                  <code>nazdeekiyaan</code> <a href={loc + "/nazdeekiyaan"}> or click here</a>
-                  <br />
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </>
-  );
-};

@@ -29,6 +29,9 @@ export const getAllMessages = async user => {
     return await fetch("scribble/getScribbleByUserId", { user });
   }
 };
+export const getScribbleMessages = async () => {
+  return await fetch("scribble/getPublicScribbles");
+};
 
 const fetch = async (suffix, params) => {
   const result = await Axios.post(serverUrl + suffix, params);
