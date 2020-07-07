@@ -67,6 +67,12 @@ const getScribbleByUserId = async req => {
   }
 };
 
+const getPublicScribbles = async req => {
+  const query = { $or: [{ "to._id": "nazdeekiyaan" }, { isPublic: true }] };
+  const result = await scribble.getAllData(query);
+  return result || [];
+};
+
 const addComment = async req => {
   const { _id, comment } = req.body;
   if (!_id || !comment) {
@@ -96,6 +102,7 @@ const addComment = async req => {
 
 router.all("/create", serverPrefix(createScribble));
 router.all("/getScribbleByUserId", serverPrefix(getScribbleByUserId));
+router.all("/getPublicScribbles", serverPrefix(getPublicScribbles));
 router.all("/addComment", serverPrefix(addComment));
 
 router.all(`/`, (req, res) => {

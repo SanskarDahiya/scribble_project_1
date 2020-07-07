@@ -19,6 +19,7 @@ const scribbleSchema = {
   message: Object,
   from: Object,
   to: Object,
+  isPublic: Boolean,
   comment: Object,
   _updatedOn: Number,
   _createdOn: Number,

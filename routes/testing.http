@@ -71,3 +71,12 @@ Content-Type: application/json
         "_id":"5efc8f748a6a4f515f529ad3"  ,
         "comment":"COmment test"   
 }
+#####################
+post http://localhost:9797/scribble/getPublicScribbles
+Content-Type: application/json
+
+{
+        "_id":"5efc8f748a6a4f515f529ad3"  ,
+        "comment":"COmment test"   
+}
+
