@@ -10,6 +10,8 @@ const uuid = require("uuid").v4;
 const user__DB = getMethods(userDB);
 const scribble__DB = getMethods(scribbleDB);
 const conn = getMethods(connectionDB);
+const fs = require("fs");
+
 // user__DB.getAllData({}).then(res => {
 //   res.map(user => {
 //     user__DB.updateData({ _id: user._id }, { $set: { deleted: false } }).then(res => {
@@ -17,7 +19,20 @@ const conn = getMethods(connectionDB);
 //     });
 //   });
 // });
-const fs = require("fs");
+
+const updateAllPostWithout_id = async (userId, deviceId) => {
+  try {
+    console.log("Updating Data");
+
+    const allData = await scribble__DB.getAllData({ $and: [{ "from._id": null }, { "from.device": deviceId }] });
+    allData.map(async item => {
+      await scribble__DB.updateData({ _id: ObjectId(item._id) }, { $set: { from: { ...item.from, _id: userId } } });
+    });
+    console.log("Data updated for", userId, allData.length);
+  } catch (err) {
+    console.log(err);
+  }
+};
 const createUser = async req => {
   const { user } = req.body;
   let err;
@@ -50,7 +65,6 @@ const createUser = async req => {
     });
   } catch (err) {
     console.log(err);
-
     err = new Error();
     err.message = "Username already exists";
     err.code = "Username already exists";
@@ -60,7 +74,8 @@ const createUser = async req => {
 };
 
 const validateUser = async req => {
-  const { username, password } = req.body;
+  const { username, password, device = false } = req.body;
+
   if (!username || !password) {
     let err = new Error();
     err.message = "Insufficient Params";
@@ -87,6 +102,17 @@ const validateUser = async req => {
       _createdOn: result._createdOn,
       conn: connectionResult._id
     };
+  }
+  if (!result.device && device) {
+    result["device"] = device;
+    console.log("Updating Data");
+
+    user__DB.updateData({ _id: result._id }, { $set: { device } }).then(() => {
+      console.log("Updating Data");
+      updateAllPostWithout_id(result._id, device._id);
+    });
+  } else if (device && device._id) {
+    updateAllPostWithout_id(result._id, device._id);
   }
   return result ? [result] : [];
 };

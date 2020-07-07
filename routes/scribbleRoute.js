@@ -33,9 +33,14 @@ const createScribble = async req => {
     from["_id"] = (from["_id"] + "").toLowerCase();
   } else {
     if (from && from.device && from.device._id) {
-      let userData = await user__DB.getSingleData({ "device._id": from.device._id });
-      let { _id: user___ID } = userData || {};
-      from = { _id: user___ID, device: from.device };
+      try {
+        let userData = await user__DB.getSingleData({ "device._id": from.device._id });
+        let { _id: user___ID } = userData || {};
+        from = { _id: user___ID, device: from.device };
+      } catch (err) {
+        from = { device };
+      }
+      console.log("userData", userData, from);
     }
   }
   try {

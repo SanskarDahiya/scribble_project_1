@@ -16,7 +16,10 @@ Content-Type: application/json
 
 {    
         "username":"kunaljain",
-        "password":"12345678"
+        "password":"12345678",
+        "device":{
+                "_id":"kukoo"
+        }
 }
 #####################
 post http://localhost:9797/user/getUserById
@@ -44,9 +47,9 @@ post http://localhost:9797/scribble/create
 Content-Type: application/json
 
 {
-    "message":"test3",
-        "to":{"_id1":"sanskarDahiya"}
-       
+    "message":"testing123123",
+        "to":{"_id":"kunalJain"},
+       "from":{"device":"kukoo"}
 }
 
 
@@ -55,12 +58,8 @@ post http://localhost:9797/scribble/getScribbleByUserId
 Content-Type: application/json
 
 {
-        "user":{
-    "_id": "kunaljain",
-    "username": "KunalJain",
-    "_createdOn": 1593952794195,
-    "conn": "429a943b-e7fa-42b1-b290-351fb22f8b70"
-  }
+"_id__":"sans123123",
+        "user":{"conn":"1"}
 }
 
 #####################
