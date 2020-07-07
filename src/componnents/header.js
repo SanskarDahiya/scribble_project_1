@@ -2,13 +2,16 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { whiteText } from "../customStyles";
 
-const Header = (props) => {
-  const handleForm = (e) => {
+const Header = props => {
+  const handleForm = e => {
     e.preventDefault();
     return;
   };
   // console.log(props, props.location.pathname.search("login"));
-  let loc = ("" + window.location).split("/").splice(0, 3).join("/");
+  let loc = ("" + window.location)
+    .split("/")
+    .splice(0, 3)
+    .join("/");
   let isNotLoginPage = false;
   if (props && props.location && props.location.pathname) {
     isNotLoginPage = (props.location.pathname + "").search("login") === -1;
@@ -57,7 +60,7 @@ const Header = (props) => {
   );
 };
 
-const LoginButton = (props) => {
+const LoginButton = props => {
   const userUpdater = props.userUpdate;
   return (
     <>

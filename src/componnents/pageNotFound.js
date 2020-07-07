@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-const PAGENOTFOUND = (props) => {
+const PAGENOTFOUND = props => {
   console.log(props);
 
   return (

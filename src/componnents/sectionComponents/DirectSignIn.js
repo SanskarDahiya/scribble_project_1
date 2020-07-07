@@ -5,13 +5,13 @@ const API_URL = "http://localhost:5000";
 const socket = io(API_URL);
 const providers = ["twitter", "google", "facebook", "github"];
 
-const DirectSignIn = (props) => {
+const DirectSignIn = props => {
   return (
     <div>
       <h3>Direct Sign-IN using</h3>
       <div className={"wrapper"}>
         <div className={"container"}>
-          {providers.map((provider) => (
+          {providers.map(provider => (
             <OAuth provider={provider} key={provider} socket={socket} />
           ))}
         </div>
@@ -25,13 +25,13 @@ export default DirectSignIn;
 class OAuth extends Component {
   state = {
     user: {},
-    disabled: "",
+    disabled: ""
   };
 
   componentDidMount() {
     const { socket, provider } = this.props;
 
-    socket.on(provider, (user) => {
+    socket.on(provider, user => {
       this.popup.close();
       this.setState({ user });
     });

@@ -1,6 +1,6 @@
 import React from "react";
 
-const SingleMessageCard = (props) => {
+const SingleMessageCard = props => {
   const { message: { message: { message = "", name = "" } = {} } = {} } = props || {};
   const { index = -1 } = props || {};
   if (!message || !message.trim() || index === -1) {
@@ -29,9 +29,9 @@ const SingleMessageCard = (props) => {
             justifyContent: "center",
             borderBottomLeftRadius: 50,
             borderTopRightRadius: 50,
-            paddingBottom:25,
+            paddingBottom: 25,
             alignItems: "center",
-            color: `rgb(${r},${g},${b})`,
+            color: `rgb(${r},${g},${b})`
           }}
         >
           <div>
@@ -41,7 +41,7 @@ const SingleMessageCard = (props) => {
             style={{
               position: "absolute",
               bottom: 5,
-              right: 5,
+              right: 5
             }}
           >
             <sub>

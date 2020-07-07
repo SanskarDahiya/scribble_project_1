@@ -1,20 +1,29 @@
 import React, { useState, useEffect } from "react";
 import { getUserByUserId, sendMessage } from "../../sampleData/loginSetup";
-
+const uuid = require("uuid").v4;
+const deviceUuid = "messageOption";
 const Wait = () => {
   return (
     <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
       <svg class="circular" width="48px" height="48px">
         <circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee" />
-        <circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00" />
+        <circle
+          class="path"
+          cx="24"
+          cy="24"
+          r="22"
+          fill="none"
+          stroke-width="4"
+          stroke-miterlimit="10"
+          stroke="#F96D00"
+        />
       </svg>
       Finding User
     </div>
   );
 };
-const SingleBlogSection = (props) => {
-  console.log(props);
-  
+const SingleBlogSection = props => {
+  // console.log(props);
   const { id: user_id = false } = (props && props.match && props.match.params) || {};
   console.log(user_id);
   const [userDetails, userDetailsUpdater] = useState(false);
@@ -22,7 +31,7 @@ const SingleBlogSection = (props) => {
   if (!user_id) {
     // props.history.push("/");
   }
-  const validateUser = async (user_id) => {
+  const validateUser = async user_id => {
     let result = false;
     try {
       user_id = (user_id + "").trim();
@@ -42,7 +51,9 @@ const SingleBlogSection = (props) => {
           <Wait />
         ) : (
           <>
-            <div className="container">{userDetails ? <ShowUser {...props} toUser={userDetails} /> : <NoUser {...props} />}</div>
+            <div className="container">
+              {userDetails ? <ShowUser {...props} toUser={userDetails} /> : <NoUser {...props} />}
+            </div>
           </>
         )}
       </section>
@@ -51,7 +62,7 @@ const SingleBlogSection = (props) => {
 };
 export default SingleBlogSection;
 
-const NoUser = (props) => {
+const NoUser = props => {
   return (
     <>
       <div className="row">
@@ -64,22 +75,35 @@ const NoUser = (props) => {
   );
 };
 
-const ShowUser = (props) => {
+const ShowUser = props => {
   const [name, nameUpdater] = useState("");
   const [message, messageUpdater] = useState("");
   const [alertzz, alertUpdater] = useState(false);
-  const setName = (e) => {
+  const [loading, loadingUpdater] = useState(false);
+
+  const setName = e => {
     e.preventDefault();
     alertzz && alertUpdater(false);
     nameUpdater(e.target.value);
   };
-  const setMessage = (e) => {
+
+  const setMessage = e => {
     e.preventDefault();
     alertzz && alertUpdater(false);
     messageUpdater(e.target.value);
   };
-  const formHandle = async (e) => {
+
+  const formHandle = async e => {
     e.preventDefault();
+    if (loading) {
+      return;
+    }
+    loadingUpdater(true);
+    let deviceId = localStorage.getItem(deviceUuid);
+    if (!deviceId) {
+      deviceId = uuid();
+      localStorage.setItem(deviceUuid, deviceId);
+    }
     alertUpdater(false);
     if (!message || !message.trim()) {
       alertUpdater(true);
@@ -89,25 +113,33 @@ const ShowUser = (props) => {
       alert("Encounter an error\nPlease Refresh");
       return;
     }
+    let myUser = props.user || {};
+    if (!myUser["device"]) {
+      myUser["device"] = { _id: deviceId };
+    }
     const newMessage = {
       to: props.toUser,
       message: {
         name,
-        message,
+        message
       },
-      from: props.user || {},
+      from: myUser
     };
     let result = await sendMessage(newMessage);
     result = result && result[0];
     props.history.push("/", { messageSent: result });
     nameUpdater("");
     messageUpdater("");
+    loadingUpdater(false);
     return;
   };
+
   return (
     <>
       <div className="comment-form-wrap pt-5">
-        <h3 className="mb-5 h4 font-weight-bold">Send a Message {props.toUser._id ? " to #" + props.toUser._id : ""}</h3>
+        <h3 className="mb-5 h4 font-weight-bold">
+          Send a Message {props.toUser._id ? " to #" + props.toUser._id : ""}
+        </h3>
         <form onSubmit={formHandle} className="p-5 bg-light">
           <div className="form-group">
             <label htmlFor="name">Name</label>
@@ -119,7 +151,7 @@ const ShowUser = (props) => {
           </div>
           <div className="form-group">
             <br />
-            <input type="submit" value="SEND" className="py-3 px-4 btn-primary" />
+            <input type="submit" value={loading ? "SENDING" : "SEND"} className="py-3 px-4 btn-primary" />
           </div>
         </form>
       </div>

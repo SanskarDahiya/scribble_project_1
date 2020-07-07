@@ -1,6 +1,6 @@
 import React from "react";
 
-const Footer = (props) => {
+const Footer = props => {
   return (
     <>
       <footer className="ftco-footer ftco-bg-dark ftco-section">
@@ -14,7 +14,7 @@ const Footer = (props) => {
 
 export default Footer;
 
-const Bottom = (props) => {
+const Bottom = props => {
   const { location: { pathname = "" } = {} } = props || {};
   return (
     <>
