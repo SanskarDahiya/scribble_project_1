@@ -37,10 +37,10 @@ const createScribble = async req => {
         let userData = await user__DB.getSingleData({ "device._id": from.device._id });
         let { _id: user___ID } = userData || {};
         from = { _id: user___ID, device: from.device };
+        // console.log("userData", userData, from);
       } catch (err) {
         from = { device };
       }
-      console.log("userData", userData, from);
     }
   }
   try {
