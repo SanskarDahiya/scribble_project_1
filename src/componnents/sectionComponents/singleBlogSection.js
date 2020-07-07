@@ -132,7 +132,7 @@ const ShowUser = props => {
       result = result && result[0];
       props.history.push("/", { messageSent: result });
     } catch (err) {
-      alert('Please refresh')
+      alert("Please refresh");
       console.log(err);
     }
     nameUpdater("");

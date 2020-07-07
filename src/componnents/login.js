@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { validateLogin, createUser } from "../sampleData/loginSetup";
 import ErrorScreen from "./sectionComponents/ErrorScreen";
+const uuid = require("uuid").v4;
+const deviceUuid = "messageOption";
 // import DirectSignIn from "./sectionComponents/DirectSignIn";
 const Login = props => {
   if (props && props.user) {
@@ -33,7 +35,7 @@ const Login = props => {
     }
     return width - 200;
   };
-  console.log(width);
+  // console.log(width);
   return (
     <>
       <div
@@ -71,6 +73,7 @@ const LoginWrapper = props => {
   const [author, authorUpdater] = useState("");
   const [message, messageUpdater] = useState("");
   const [alertzz, alertUpdater] = useState(false);
+  const [loading, loadingUpdater] = useState(false);
 
   const setAuthor = e => {
     e.preventDefault();
@@ -87,6 +90,9 @@ const LoginWrapper = props => {
   const handelSubmit = async e => {
     try {
       e.preventDefault();
+      if (loading) {
+        return;
+      }
       alertUpdater(false);
       if (!author || author.trim().length <= 0 || !message || message.trim().length <= 0) {
         alertUpdater(true);
@@ -96,6 +102,7 @@ const LoginWrapper = props => {
         password: message,
         username: author.trim()
       };
+      loadingUpdater(true);
       let resp = await validateLogin(newLogin);
       if (resp && resp.length) {
         resp = resp[0];
@@ -107,12 +114,13 @@ const LoginWrapper = props => {
             name: "Invalid Credentials"
           });
       }
+      loadingUpdater(false);
       return;
     } catch (err) {
       console.error(err);
+      loadingUpdater(false);
     }
   };
-
   return (
     <>
       <div>
@@ -145,7 +153,7 @@ const LoginWrapper = props => {
             </div> */}
 
           <button type="submit" className="btn-primary btn-block">
-            Submit
+            {loading ? "Getting Info" : "Submit"}
           </button>
           <p className="forgot-password text-right">
             {alertzz && "Please fill all * fields"}
@@ -169,7 +177,7 @@ const Signup = props => {
   const [author, authorUpdater] = useState("");
   const [message, messageUpdater] = useState("");
   const [password, passwordUpdater] = useState("");
-
+  const [loading, loadingUpdater] = useState(false);
   const [alertzz, alertUpdater] = useState(false);
 
   const setAuthor = e => {
@@ -177,7 +185,7 @@ const Signup = props => {
     alertUpdater(false);
     const val = e.target.value;
     authorUpdater(val);
-    console.log(val.match("^[a-zA-Z0-9_@]*$"));
+    // console.log(val.match("^[a-zA-Z0-9_@]*$"));
   };
 
   const setMessage = e => {
@@ -194,6 +202,14 @@ const Signup = props => {
   const handelSubmit = async e => {
     try {
       e.preventDefault();
+      if (loading) {
+        return;
+      }
+      let deviceId = localStorage.getItem(deviceUuid);
+      if (!deviceId) {
+        deviceId = uuid();
+        localStorage.setItem(deviceUuid, deviceId);
+      }
       alertUpdater(false);
       if (
         !password ||
@@ -214,19 +230,24 @@ const Signup = props => {
         props.errorUpdater({ name: "Username contains only a-z,A-Z,0-9,$,_ only" });
         return;
       }
-
       const newLogin = {
         password: password,
         email: message,
         username: author,
-        _id: author
+        _id: author,
+        device: {
+          _id: deviceId
+        }
       };
+      loadingUpdater(true);
       let result = await createUser(newLogin);
       console.log(result);
       // alert(JSON.stringify(newLogin));
       userUpdater(newLogin);
+      loadingUpdater(false);
       return;
     } catch (err) {
+      loadingUpdater(false);
       console.log(err);
       props.errorUpdater && props.errorUpdater({ name: err.message });
     }
@@ -253,7 +274,7 @@ const Signup = props => {
         </div>
 
         <button type="submit" className="btn-primary btn-block">
-          Sign Up
+          {loading ? "Please Wait" : "Sign Up"}
         </button>
         <p className="forgot-password text-right">
           {alertzz && "Please fill all fields\n"}

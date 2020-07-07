@@ -78,7 +78,11 @@ const ShowMessages = props => {
           </code>
           <h2 className="mb-3">{"SCRIBBLE 2020 :Messages"}</h2>
           {messages && messages.length ? (
-            messages.map((message, index) => <SingleMessageCard index={index} message={message} {...props} />)
+            messages.map((message, index) => (
+              <div key={index}>
+                <SingleMessageCard index={index} message={message} {...props} />
+              </div>
+            ))
           ) : (
             <ShowNoMessageCard {...props} />
           )}
@@ -176,8 +180,8 @@ const ShowIndex = props => {
                 Many events that occur before college students graduate. The last year is a very important year.
                 Placements, exams and many other concerns are standing at the doorstep of starting a new life for jobs,
                 higher studies, startups, businesses. <br />
-                <p>But friends, they are lifeline.</p>
-                There must be a way to make the{" "}
+                But friends, they are lifeline.
+                <br /> There must be a way to make the{" "}
                 <u>
                   <i>
                     last leaving memories <code>special,</code>
@@ -185,13 +189,13 @@ const ShowIndex = props => {
                 </u>{" "}
                 with those friends, who have became members of our family over the years. Due to this pandemic there was
                 neither a farewell, nor an annual celebration and scribble day. Everything going digital.
-                <div>
-                  <p>
-                    So, This scribble day can also be celebrated online. Express your love to your friends through few
-                    words.{" "}
-                  </p>
-                </div>
               </p>
+              <div>
+                <p>
+                  So, This scribble day can also be celebrated online. Express your love to your friends through few
+                  words.{" "}
+                </p>
+              </div>
             </div>
             <Link to="/login">Click here to login/signup!</Link>
           </div>
