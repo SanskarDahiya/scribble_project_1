@@ -55,7 +55,9 @@ const ShowMessages = props => {
       } else {
         alert("Please re-login again");
       }
-    } catch (err) {}
+    } catch (err) {
+      console.log(err);
+    }
     loadingUpdater(false);
   };
   useEffect(() => {
