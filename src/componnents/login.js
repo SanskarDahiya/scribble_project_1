@@ -93,6 +93,11 @@ const LoginWrapper = props => {
       if (loading) {
         return;
       }
+      let deviceId = localStorage.getItem(deviceUuid);
+      if (!deviceId) {
+        deviceId = uuid();
+        localStorage.setItem(deviceUuid, deviceId);
+      }
       alertUpdater(false);
       if (!author || author.trim().length <= 0 || !message || message.trim().length <= 0) {
         alertUpdater(true);
@@ -100,7 +105,8 @@ const LoginWrapper = props => {
       }
       const newLogin = {
         password: message,
-        username: author.trim()
+        username: author.trim(),
+        device: { _id: deviceId }
       };
       loadingUpdater(true);
       let resp = await validateLogin(newLogin);
