@@ -5,7 +5,7 @@ const { getMethods, getAllData } = require("../apis/index");
 const { serverPrefix } = require("../apis/serverHoc");
 const { encPassword } = require("../apis/encryption");
 const uuid = require("uuid").v4;
-const user = getMethods(userDB);
+const user__DB = getMethods(userDB);
 const conn = getMethods(connectionDB);
 const fs = require("fs");
 const createUser = async req => {
@@ -30,8 +30,10 @@ const createUser = async req => {
   console.log(_id);
   let result;
   try {
-    result = await user.addData({ ...user, _id, newName, password, _createdOn: new Date().getTime() });
+    result = await user__DB.addData({ ...user, _id, newName, password, _createdOn: new Date().getTime() });
   } catch (err) {
+    console.log(err);
+
     err = new Error();
     err.message = "Username already exists";
     err.code = "Username already exists";
@@ -49,7 +51,7 @@ const validateUser = async req => {
     return err;
   }
   const query = { $and: [{ _id: (username + "").toLowerCase() }, { password: encPassword(password) }] };
-  let result = await user.getSingleData(query, { newName: 0 });
+  let result = await user__DB.getSingleData(query, { newName: 0 });
   if (result) {
     let connectionResult = await conn.getSingleData({ user: { _id: result._id } });
     const time = new Date().getTime();
@@ -81,7 +83,7 @@ const getUserById = async req => {
     return err;
   }
   const query = { _id: (_id + "").toLowerCase() };
-  const result = await user.getSingleData(query, { newName: 0 });
+  const result = await user__DB.getSingleData(query, { newName: 0 });
   return result ? [result] : [];
 };
 
@@ -101,7 +103,7 @@ const updateUser = async req => {
     return err;
   }
   const find = { _id: (_id + "").toLowerCase() };
-  let result = await user.getAllData(find);
+  let result = await user__DB.getAllData(find);
   if (!result || !result[0]) {
     let err = new Error();
     err.message = "User Not Found";
@@ -110,7 +112,7 @@ const updateUser = async req => {
   }
   rest[" _updatedOn"] = new Date().getTime();
   const update = { $set: rest };
-  await user.updateData(find, update);
+  await user__DB.updateData(find, update);
   result = [Object.assign(result[0], rest)];
   return result || [];
 };
