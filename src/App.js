@@ -7,11 +7,14 @@ import Index from "./componnents";
 import SendToUserMessage from "./componnents/multiBlog";
 import PAGENOTFOUND from "./componnents/pageNotFound";
 import Login from "./componnents/login";
+const loc = ("" + window.location)
+  .split("/")
+  .splice(0, 3)
+  .join("/");
 
 const localStoragename = "loginCredentials";
 const App = props => {
   const [loginDetails, loginUpdater] = useState(false);
-  // const [loginDetails, loginUpdater] = useState({ _id: "kunal", username: "admin" });
   const setLoginDetails = data => {
     try {
       // used for login as well as logout
@@ -105,7 +108,7 @@ const WillBeAdded = props => {
                 <h2>Soon Adding This Exiting Feature</h2>
                 <p>
                   Here, you can post your scribble as public or write anything to us via username{" "}
-                  <code>nazdeekiyaan</code>.
+                  <code>nazdeekiyaan</code> <a href={loc + "/nazdeekiyaan"}> or click here</a>
                   <br />
                 </p>
               </div>
