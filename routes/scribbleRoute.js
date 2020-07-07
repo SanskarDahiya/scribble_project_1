@@ -32,7 +32,7 @@ const createScribble = async req => {
     from["_id"] = (from["_id"] + "").toLowerCase();
   }
   try {
-    result = await scribble.addData({ message, to, from, _createdOn: new Date().getTime() });
+    result = await scribble.addData({ message, to, deleted: false, from, _createdOn: new Date().getTime() });
   } catch (err) {
     throw err;
   }
@@ -68,7 +68,7 @@ const getScribbleByUserId = async req => {
 };
 
 const getPublicScribbles = async req => {
-  const query = { $or: [{ "to._id": "nazdeekiyaan" }, { isPublic: true }] };
+  const query = { $and: [{ $or: [{ "to._id": "nazdeekiyaan" }, { isPublic: true }] }, { deleted: false }] };
   const result = await scribble.getAllData(query);
   return result || [];
 };

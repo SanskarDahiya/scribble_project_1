@@ -4,9 +4,19 @@ const { userDB, scribbleDB, connectionDB } = require("../Schemas/index");
 const { getMethods, getAllData } = require("../apis/index");
 const { serverPrefix } = require("../apis/serverHoc");
 const { encPassword } = require("../apis/encryption");
+const mongoose = require("mongoose");
+const ObjectId = mongoose.Types.ObjectId;
 const uuid = require("uuid").v4;
 const user__DB = getMethods(userDB);
+const scribble__DB = getMethods(scribbleDB);
 const conn = getMethods(connectionDB);
+// user__DB.getAllData({}).then(res => {
+//   res.map(user => {
+//     user__DB.updateData({ _id: user._id }, { $set: { deleted: false } }).then(res => {
+//       console.log(user._id);
+//     });
+//   });
+// });
 const fs = require("fs");
 const createUser = async req => {
   const { user } = req.body;
@@ -30,7 +40,14 @@ const createUser = async req => {
   console.log(_id);
   let result;
   try {
-    result = await user__DB.addData({ ...user, _id, newName, password, _createdOn: new Date().getTime() });
+    result = await user__DB.addData({
+      ...user,
+      _id,
+      newName,
+      deleted: false,
+      password,
+      _createdOn: new Date().getTime()
+    });
   } catch (err) {
     console.log(err);
 

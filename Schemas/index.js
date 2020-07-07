@@ -12,7 +12,8 @@ const userSchema = {
   newName: String,
   _createdOn: Number,
   _updatedOn: Number,
-  EXTRA: Object
+  EXTRA: Object,
+  deleted: Boolean
 };
 
 const scribbleSchema = {
@@ -23,14 +24,16 @@ const scribbleSchema = {
   comment: Object,
   _updatedOn: Number,
   _createdOn: Number,
-  EXTRA: Object
+  EXTRA: Object,
+  deleted: Boolean
 };
 const connectionsSchema = {
   _id: String,
   user: Object,
   _createdOn: Number,
   _expireOn: Number,
-  EXTRA: Object
+  EXTRA: Object,
+  deleted: Boolean
 };
 const userDB = getModel("UserTable", getSchema(userSchema));
 const scribbleDB = getModel("ScribbleTable", getSchema(scribbleSchema));
