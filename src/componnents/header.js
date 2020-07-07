@@ -93,15 +93,14 @@ const Header = props => {
               ))}
               <li className="nav-item">
                 {props && props.user ? (
-                  <Link
+                  <div
                     onClick={() => {
                       userUpdater(false);
                     }}
-                    to="/login"
                     className="nav-link"
                   >
                     <span id="username1">Sign-Out: {JSON.stringify((props.user && props.user.username) || {})}</span>
-                  </Link>
+                  </div>
                 ) : (
                   <Link to="/login" className="nav-link">
                     <span id="username">Login</span>
