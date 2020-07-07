@@ -1,23 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
 
 const SingleMessageCard = props => {
+  const getColor = () => {
+    const getRandom = (x = 230) => Number(Math.random() * x);
+    const r = getRandom();
+    const g = getRandom();
+    const b = getRandom();
+    return `rgb(${r},${g},${b})`;
+  };
+  const [color, colorUpdater] = useState(getColor());
   const { message: allMessages = {} } = props || {};
   const { message: { message = "", name = "" } = {} } = allMessages || {};
   const { index = -1 } = props || {};
   if (!message || !message.trim() || index === -1) {
     return <></>;
   }
-  const getRandom = (x = 210) => Number(Math.random() * x);
-  const r = getRandom();
-  const g = getRandom();
-  const b = getRandom();
+
   return (
     <div className="row" key={index}>
       <div className="col-sm-8 ">
         <div
           onClick={() => {
-            props.history.push("/");
+            // props.history.push("/");
             console.log(index);
+            colorUpdater(getColor());
           }}
           style={{
             overflow: "hidden",
@@ -33,7 +39,7 @@ const SingleMessageCard = props => {
             paddingBottom: 25,
             alignItems: "center",
             flexDirection: "column",
-            color: `rgb(${r},${g},${b})`
+            color: color || getColor() || "black"
           }}
         >
           <div>
