@@ -39,7 +39,11 @@ const ShowMessages = props => {
       } else {
         alert("Please re-login again");
       }
-    } catch (err) {}
+    } catch (err) {
+      if (err.code == "Session Expire") {
+        alert("Session Expire\nPlease Login Again\nThanks");
+      }
+    }
     loadingUpdater(false);
   };
   useEffect(() => {
