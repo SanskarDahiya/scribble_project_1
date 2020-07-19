@@ -3,36 +3,33 @@ import { Link } from "react-router-dom";
 import { whiteText } from "../customStyles";
 export const menuBar = [
   { name: "Home", link: "/" },
-  { name: "Trends", link: "/trends" }
+  { name: "Trends", link: "/trends" },
 ];
 const alertIndex = "ALERT_July_7th";
 
-const Header = props => {
+const Header = (props) => {
   const userUpdater = props.userUpdate;
-  let alert_ = localStorage.getItem(alertIndex) || {};
+
+  let alert_ = { count: true };
   try {
+    alert_ = localStorage.getItem(alertIndex) || {};
     alert_ = JSON.parse(alert_);
   } catch (err) {
+    console.log(err);
     alert_ = { count: true };
   }
   // alert(JSON.stringify(alert_));
   // alert(alert_["count"] === 4 || alert_["count"] === 5 || alert_["expire"] < new Date().getTime());
   if (alert_["count"] || alert_["expire"] < new Date().getTime()) {
     alert("Hello Friends,\nNow you can write for us also.\nsee trends sections for more detail\n\nThanks");
-    localStorage.setItem(
-      alertIndex,
-      JSON.stringify({ count: false, expire: new Date().getTime() + 1000 * 60 * 60 * 24 })
-    );
+    localStorage.setItem(alertIndex, JSON.stringify({ count: false, expire: new Date().getTime() + 1000 * 60 * 60 * 24 }));
   }
-  const handleForm = e => {
+  const handleForm = (e) => {
     e.preventDefault();
     return;
   };
   // console.log(props, props.location.pathname.search("login"));
-  let loc = ("" + window.location)
-    .split("/")
-    .splice(0, 3)
-    .join("/");
+  let loc = ("" + window.location).split("/").splice(0, 3).join("/");
 
   return (
     <>
@@ -114,7 +111,7 @@ const Header = props => {
     </>
   );
 };
-const LoginButtonWrapper = props => {
+const LoginButtonWrapper = (props) => {
   let isNotLoginPage = false;
   if (props && props.location && props.location.pathname) {
     isNotLoginPage = (props.location.pathname + "").search("login") === -1;
@@ -136,7 +133,7 @@ const LoginButtonWrapper = props => {
     </div>
   );
 };
-const LoginButton = props => {
+const LoginButton = (props) => {
   const userUpdater = props.userUpdate;
   return (
     <>
