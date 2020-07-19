@@ -5,9 +5,9 @@ export const menuBar = [
   { name: "Home", link: "/" },
   { name: "Trends", link: "/trends" },
 ];
-const alertIndex = "ALERT_July_7th";
 
 const Header = (props) => {
+  const alertIndex = "ALERT_July_7th";
   const userUpdater = props.userUpdate;
 
   let alert_ = { count: true };
@@ -22,7 +22,9 @@ const Header = (props) => {
   // alert(alert_["count"] === 4 || alert_["count"] === 5 || alert_["expire"] < new Date().getTime());
   if (alert_["count"] || alert_["expire"] < new Date().getTime()) {
     alert("Hello Friends,\nNow you can write for us also.\nsee trends sections for more detail\n\nThanks");
-    localStorage.setItem(alertIndex, JSON.stringify({ count: false, expire: new Date().getTime() + 1000 * 60 * 60 * 24 }));
+    try {
+      localStorage.setItem(alertIndex, JSON.stringify({ count: false, expire: new Date().getTime() + 1000 * 60 * 60 * 24 }));
+    } catch (err) {}
   }
   const handleForm = (e) => {
     e.preventDefault();
