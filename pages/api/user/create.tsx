@@ -24,7 +24,7 @@ export default Wrapper(async (req: NextApiRequest) => {
   }
 
   {
-    const userInfo = (await findUserById(username)) as unknown as IUser | null;
+    const userInfo = await findUserById(username);
 
     if (userInfo) {
       throw new Error("User already exists");
