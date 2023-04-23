@@ -1,6 +1,5 @@
-import { getClientDb } from "mongo-client";
+import { findUserById, updateUserInfo } from "mongo-client";
 import { NextApiRequest } from "next";
-import { TABLES } from "../../../constants";
 import { Wrapper } from "../../../helper";
 import { compare } from "../../../helper/encrypt";
 import { GenerateNewToken } from "../../../helper/generateTokens";
@@ -19,10 +18,7 @@ export default Wrapper(async function handler(req: NextApiRequest) {
   ) {
     throw new Error("Invalid Username or Password");
   }
-  const db = await getClientDb();
-  const userInfo = (await db
-    .collection(TABLES.user)
-    .findOne({ _id: username })) as unknown as IUser | null;
+  const userInfo = (await findUserById(username)) as unknown as IUser | null;
 
   if (!userInfo) {
     throw new Error("Invalid Username or Password");
@@ -41,11 +37,9 @@ export default Wrapper(async function handler(req: NextApiRequest) {
   }
   // Now will assign access_token & refresh_token
   if (requestId) {
-    await db.collection(TABLES.user).findOneAndUpdate(
-      // @ts-ignore
-      { _id: userInfo._id },
-      { $set: { device: requestId, _updatedOn: new Date() } }
-    );
+    await updateUserInfo(userInfo._id, {
+      $set: { device: requestId, _updatedOn: new Date() },
+    });
   }
   const result = await GenerateNewToken({
     ...userInfo,

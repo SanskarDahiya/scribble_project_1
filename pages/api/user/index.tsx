@@ -1,6 +1,5 @@
-import { getClientDb } from "mongo-client";
+import { findTokenById, findUserById } from "mongo-client";
 import { NextApiRequest } from "next";
-import { TABLES } from "../../../constants";
 import { Wrapper } from "../../../helper";
 import { GenerateNewToken } from "../../../helper/generateTokens";
 import { IConnection, IUser, modifyUser } from "../../../types";
@@ -10,10 +9,9 @@ export default Wrapper(async (req: NextApiRequest) => {
   if (!access_token) {
     return { success: false, message: "No Token Present" };
   }
-  const db = await getClientDb();
-  const connInfo = (await db
-    .collection(TABLES.connection)
-    .findOne({ access_token: access_token })) as unknown as IConnection | null;
+  const connInfo = (await findTokenById(
+    access_token
+  )) as unknown as IConnection | null;
   if (!connInfo) {
     return { success: false, message: "No Token Found" };
   }
@@ -21,10 +19,9 @@ export default Wrapper(async (req: NextApiRequest) => {
   const currTime = new Date().getTime();
 
   const timesCreated = Number(((currTime - createdDate) / 1000).toFixed(0));
-  const userInfo = (await db
-    .collection(TABLES.user)
-    // @ts-ignore
-    .findOne({ _id: connInfo.userId })) as unknown as IUser | null;
+  const userInfo = (await findUserById(
+    connInfo.userId
+  )) as unknown as IUser | null;
   if (!userInfo || userInfo.deleted) {
     return {
       success: false,

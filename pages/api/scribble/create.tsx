@@ -1,7 +1,12 @@
 import { randomUUID } from "crypto";
-import { getClientDb } from "mongo-client";
+import {
+  findTokenById,
+  findUserByDevice,
+  findUserById,
+  generateNewScribble,
+  updateUserInfo,
+} from "mongo-client";
 import { NextApiRequest } from "next";
-import { TABLES } from "../../../constants";
 import { Wrapper } from "../../../helper";
 import { IConnection, IScribble, IUser } from "../../../types";
 
@@ -12,11 +17,8 @@ export default Wrapper(async (req: NextApiRequest) => {
   if (!to || !message || !message.trim() || message.trim().length <= 10) {
     throw new Error("Invalid Username or Password or Email");
   }
-  const db = await getClientDb();
 
-  const to_user = (await db
-    .collection(TABLES.user)
-    .findOne({ _id: to })) as unknown as IUser | null;
+  const to_user = (await findUserById(to)) as unknown as IUser | null;
   if (!to_user) {
     throw new Error("No user found to send message.");
   }
@@ -24,14 +26,13 @@ export default Wrapper(async (req: NextApiRequest) => {
   {
     try {
       if (access_token) {
-        const connInfo = (await db.collection(TABLES.connection).findOne({
-          access_token: access_token,
-        })) as unknown as IConnection | null;
+        const connInfo = (await findTokenById(
+          access_token
+        )) as unknown as IConnection | null;
         if (connInfo?.userId) {
-          fromUser = (await db
-            .collection(TABLES.user)
-            // @ts-ignore
-            .findOne({ _id: connInfo.userId })) as unknown as IUser | null;
+          fromUser = (await findUserById(
+            connInfo.userId
+          )) as unknown as IUser | null;
         }
       }
     } catch (err) {}
@@ -40,9 +41,9 @@ export default Wrapper(async (req: NextApiRequest) => {
   {
     try {
       if (!fromUser && requestId) {
-        fromUser = (await db
-          .collection(TABLES.user)
-          .findOne({ device: requestId })) as unknown as IUser | null;
+        fromUser = (await findUserByDevice(
+          requestId
+        )) as unknown as IUser | null;
       }
     } catch (err) {}
   }
@@ -62,32 +63,24 @@ export default Wrapper(async (req: NextApiRequest) => {
   };
 
   if (fromUser?._id) {
-    await db.collection(TABLES.user).findOneAndUpdate(
-      // @ts-ignore
-      { _id: fromUser._id },
-      {
-        $set: {
-          _updatedOn: new Date(),
-        },
-        $inc: {
-          sendMessageCount: 1,
-        },
-      }
-    );
-  }
-  await db.collection(TABLES.user).findOneAndUpdate(
-    // @ts-ignore
-    { _id: to },
-    {
+    await updateUserInfo(fromUser._id, {
       $set: {
         _updatedOn: new Date(),
       },
       $inc: {
-        getMessageCount: 1,
+        sendMessageCount: 1,
       },
-    }
-  );
-  // @ts-ignore
-  await db.collection(TABLES.scribble).insertOne(scribbleData);
+    });
+  }
+  await updateUserInfo(to, {
+    $set: {
+      _updatedOn: new Date(),
+    },
+    $inc: {
+      getMessageCount: 1,
+    },
+  });
+
+  await generateNewScribble(scribbleData);
   return { success: true };
 });

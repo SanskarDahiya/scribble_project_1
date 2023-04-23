@@ -1,7 +1,6 @@
 import { NextApiRequest } from "next";
-import { getClientDb } from "mongo-client";
+import { findUserById, generateNewUser } from "mongo-client";
 
-import { TABLES } from "../../../constants";
 import { Wrapper } from "../../../helper";
 import { encrypt } from "../../../helper/encrypt";
 import { IUser } from "../../../types";
@@ -24,12 +23,8 @@ export default Wrapper(async (req: NextApiRequest) => {
     throw new Error("Invalid Username or Password or Email");
   }
 
-  const db = await getClientDb();
-
   {
-    const userInfo = (await db
-      .collection(TABLES.user)
-      .findOne({ _id: username })) as unknown as IUser | null;
+    const userInfo = (await findUserById(username)) as unknown as IUser | null;
 
     if (userInfo) {
       throw new Error("User already exists");
@@ -52,7 +47,7 @@ export default Wrapper(async (req: NextApiRequest) => {
     getMessageCount: 0,
   };
   // @ts-ignore
-  await db.collection(TABLES.user).insertOne(userInfo);
+  await generateNewUser(userInfo);
   const result = await GenerateNewToken(userInfo);
   return { success: true, ...result };
 });

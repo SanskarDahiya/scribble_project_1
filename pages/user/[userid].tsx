@@ -2,13 +2,9 @@ import React, { useState } from "react";
 import { GetServerSideProps } from "next";
 
 import { IUser, modifyUser } from "../../types";
-import { getClientDb } from "mongo-client";
-import { TABLES } from "../../constants";
+import { findUserById } from "mongo-client";
 import FormWrapper from "custom-form-hook";
 import { sendMessage } from "../../helper/AxiosCall";
-import { useAppStore } from "../../stores/AppStore";
-// import { getUserByUserId, sendMessage } from "../../sampleData/loginSetup";
-
 const Wait = () => {
   return (
     <div
@@ -60,10 +56,8 @@ export default SingleBlogSection;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const userid = context.query.userid as any;
-  const db = await getClientDb();
-  const user = (await db
-    .collection(TABLES.user)
-    .findOne({ _id: userid })) as unknown as IUser | null;
+
+  const user = (await findUserById(userid)) as unknown as IUser | null;
 
   return {
     props: {
