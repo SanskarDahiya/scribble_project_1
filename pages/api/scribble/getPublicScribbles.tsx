@@ -1,4 +1,4 @@
-import { getPublicScribble } from "mongo-client";
+import { getPublicScribble } from "firebase-client";
 import { NextApiRequest } from "next";
 import { Wrapper } from "../../../helper";
 import { IScribble, modifyScribble } from "../../../types";

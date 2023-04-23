@@ -1,5 +1,5 @@
 import { randomUUID } from "crypto";
-import { generateNewToken, removeOldTokens } from "mongo-client";
+import { generateNewToken, removeOldTokens } from "firebase-client";
 import { IConnection, IUser, modifyUser } from "../types";
 import { encrypt } from "./encrypt";
 

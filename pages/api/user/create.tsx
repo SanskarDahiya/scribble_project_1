@@ -1,5 +1,5 @@
 import { NextApiRequest } from "next";
-import { findUserById, generateNewUser } from "mongo-client";
+import { findUserById, generateNewUser } from "firebase-client";
 
 import { Wrapper } from "../../../helper";
 import { encrypt } from "../../../helper/encrypt";

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { GetServerSideProps } from "next";
 
 import { IUser, modifyUser } from "../../types";
-import { findUserById } from "mongo-client";
+import { findUserById } from "firebase-client";
 import FormWrapper from "custom-form-hook";
 import { sendMessage } from "../../helper/AxiosCall";
 const Wait = () => {

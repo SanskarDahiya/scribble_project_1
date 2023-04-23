@@ -1,4 +1,4 @@
-import { findUserById, updateUserInfo } from "mongo-client";
+import { findUserById, updateUserInfo } from "firebase-client";
 import { NextApiRequest } from "next";
 import { Wrapper } from "../../../helper";
 import { compare } from "../../../helper/encrypt";

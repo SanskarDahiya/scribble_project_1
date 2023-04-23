@@ -1,4 +1,4 @@
-import { findTokenById, findUserById } from "mongo-client";
+import { findTokenById, findUserById } from "firebase-client";
 import { NextApiRequest } from "next";
 import { Wrapper } from "../../../helper";
 import { GenerateNewToken } from "../../../helper/generateTokens";

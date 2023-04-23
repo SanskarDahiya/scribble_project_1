@@ -5,7 +5,7 @@ import {
   findUserById,
   generateNewScribble,
   updateUserInfo,
-} from "mongo-client";
+} from "firebase-client";
 import { NextApiRequest } from "next";
 import { Wrapper } from "../../../helper";
 import { IConnection, IScribble, IUser } from "../../../types";
