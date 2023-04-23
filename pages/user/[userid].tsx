@@ -87,7 +87,7 @@ const ShowUser = (props: { toUser: IUser }) => {
       !data?.send_message.trim() ||
       data?.send_message.trim().length <= 10
     ) {
-      throw new Error("Invalid Username or Password or Email");
+      throw new Error("Message Length should be more than 10 characters");
     }
     try {
       const result = await sendMessage({
